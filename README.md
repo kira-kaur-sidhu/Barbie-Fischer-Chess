@@ -1,2 +1,2 @@
-# kira-kim-sarah-chess-engine
+# jasmine-kim-kira-sarah-chess-engine
 Ada Capstone
