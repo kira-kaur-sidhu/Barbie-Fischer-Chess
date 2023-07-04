@@ -16,14 +16,14 @@ from time import sleep
 import sys
 
 # Initalize chessboard 
-# Create a dictionary to keep track of where pieces are by name - Sarah
-# Create capture function for attacking pieces - Kim 
-# Implement engine as the black player - Kira
+# Create a dictionary to keep track of where pieces are by name
+# Create capture function for attacking pieces
+# Implement engine as the black player
 # Figure out how to update display instead of having to close it out
 # Understand the chess.E8 notation for, prints 60, what is 60? -> chess.squarenames pass in
 
 board = chess.Board()
-engine = chess.engine.SimpleEngine.popen_uci("stockfish")
+# engine = chess.engine.SimpleEngine.popen_uci("stockfish")
 
 move_list = [
     'e4', 'e5'
