@@ -23,10 +23,10 @@ import sys
 # Understand the chess.E8 notation for, prints 60, what is 60? -> chess.squarenames pass in
 
 board = chess.Board()
-# engine = chess.engine.SimpleEngine.popen_uci("stockfish")
+engine = chess.engine.SimpleEngine.popen_uci("stockfish")
 
 move_list = [
-    'e4', 'e5'
+    'e4'
     ]
 
 
@@ -36,14 +36,14 @@ new_move = input("Input your move: " )
 if chess.Move.from_uci(original_move+new_move) in board.legal_moves:
     move_list.append(new_move)
 
-# result = engine.play(board, chess.engine.Limit(time=2.0))
-# print(result)
-# engine.quit()
 
 game_board = display.start(board.fen())
 while not display.check_for_quit():
     if move_list:
         board.push_san(move_list.pop(0))
+        display.update(board.fen(), game_board)
+        result = engine.play(board, chess.engine.Limit(time=2.0))
+        board.push(result.move)
         display.update(board.fen(), game_board)
         if board.is_checkmate():
             print("Checkmate")
@@ -51,4 +51,6 @@ while not display.check_for_quit():
             print(chess.E8)
             print("Check")
     sleep(1)
+
+engine.quit()
 display.terminate()
