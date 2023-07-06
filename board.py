@@ -77,12 +77,14 @@ def play_chess_game():
             if user_moves(board, game_board, move_list) == "continue":
                 continue
             if check_if_game_ends(board):
+                winner = "white"
                 break
             elif board.is_check():
                 print("Check")
 
             engine_moves(board, game_board, engine_list, engine)
             if check_if_game_ends(board):
+                winner = "black"
                 break
             elif board.is_check():
                 print("Check")
@@ -90,6 +92,7 @@ def play_chess_game():
         if user_color == "black":
             engine_moves(board, game_board, engine_list, engine)
             if check_if_game_ends(board):
+                winner = "white"
                 break
             elif board.is_check():
                 print("Check")
@@ -97,12 +100,13 @@ def play_chess_game():
             if user_moves(board, game_board, move_list) == "continue":
                 continue
             if check_if_game_ends(board):
+                winner = "black"
                 break
             elif board.is_check():
                 print("Check")
 
     engine.quit()
     display.terminate()
-    print("Game Over")
+    # print(f"Game Over, Winner is {winner}") <--- fix this
 
 play_chess_game()
