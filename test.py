@@ -79,7 +79,7 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
                     continue
             except IndexError:
                 continue 
-   
+
     if not result: 
         result = engine.play(board, chess.engine.Limit(time=2.0))
         board.push(result.move)
@@ -89,11 +89,6 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
     display.update(board.fen(), game_board)
     sleep(1)
 
-    # try:
-    #     result = current_opening["variations"][0][move_index][0]
-    # except IndexError:
-    #     result = current_opening["variations"][1][move_index][0]
-   
 
 
 def play_chess_game():
