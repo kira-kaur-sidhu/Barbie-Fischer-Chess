@@ -2,7 +2,7 @@ opening_table = [
             {
                 "name": "Queen's Gambit",
                 "variations":[
-                    [["Accepted"], ["d4", "d5"]],
+                    [["Accepted"], ["d4", "d5"], ["c4", "dxc4"], ["Nf3", "Nf6"], ["e3", "e6"], ["Bxc4", "c5"], ["O-O", "a6"],["Bb3", "cxd4"], ["exd4", "Nc6"], ["Nc3", "Be7"],["Re1", "O-O"],["a3"]],
                     [["Declined"], ["d4", "d5"], ["c4", "e6"], ["Nc3", "Nf6"], ["Bg5", "Be7"], ["Nf3", "h6"], ["Bxf6", "Bxf6"], ["e3"]]
                 ]
             },
