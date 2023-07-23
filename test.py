@@ -63,11 +63,11 @@ def engine_moves(board, game_board, engine_list, engine):
     sleep(1)
 
 def opening_moves(board, game_board, engine_list, current_opening):
-    move_index = len(engine_list)
+    move_index = len(engine_list) + 1 
     try:
-        result = current_opening["variations"]["Declined"][move_index][0]
+        result = current_opening["variations"][0][move_index][0]
     except IndexError:
-        return False
+        result = current_opening["variations"][1][move_index][0]
     engine_list.append(result)
     board.push_san(result)
     display.update(board.fen(), game_board)
