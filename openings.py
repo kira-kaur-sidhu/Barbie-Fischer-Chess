@@ -13,5 +13,14 @@ opening_table = [
                     [["Polerio Defense"], ["e4", "e5"], ["Nf3", "Nc6"], ["Bc4", "Nf6"], ["Ng5", "d5"], ["exd5", "Na5"], ["Bb5+", "c6"], ["dxc6", "bxc6"]], 
                     [["Traxler's CounterAttack"],["e4", "e5"], ["Nf3", "Nc6"], ["Bc4", "Nf6"], ["Ng5", "Bc5"], ["Nxf7", "Bxf2+"], ["Kf1", "Qe7"], ["Nxh8", "d5"], ["exd5", "Nd4"]]
                 ]
+            }, 
+            {
+                "name": "Ruy Lopez",
+                "variations": [
+                    [["Marshall Attack"],["e4", "e5"], ["Nf3", "Nc6"], ["Bb5", "a6"], ["Ba4", "Nf6"], ["O-O", "Be7"], ["Re1", "b5"], ["Bb3", "O-O"], ["c3", "d5"], ["exd5", "Nxd5"], ["Nxe5", "Nxe5"], ["Rxe5", "c6"]],
+                    [["Closed"],["e4", "e5"], ["Nf3", "Nc6"], ["Ba4", "Nf6"], ["O-O", "Be7"], ["Re1", "b5"], ["Bb3", "O-O"], ["a4"]],
+                    [["Archangel"],["e4", "e5"], ["Nf3", "Nc6"], ["Bb5", "a6"], ["Ba4", "Nf6"], ["O-O", "b5"], ["Bb3", "Bb7"], ["d4", "Nxd4"], ["Nxd4", "exd4"], ["e5", "Ne4"], ["c3", "d3"]],
+                    [["Main"], ["e4", "e5"], ["Bb5", "a6"],["Ba4", "Nf6"], ["O-O", "Nxe4"], ["d4", "b5"], ["Bb3", "d5"], ["dxe5", "Be6"], ["Nbd2", "Nc5"], ["c3"]]
+                ]
             }
 ]
