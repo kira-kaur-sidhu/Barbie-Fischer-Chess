@@ -62,16 +62,38 @@ def engine_moves(board, game_board, engine_list, engine):
     display.update(board.fen(), game_board)
     sleep(1)
 
-def opening_moves(board, game_board, engine_list, current_opening):
+def opening_moves(board, game_board, engine_list, current_opening, move_list, engine):
     move_index = len(engine_list) + 1 
-    try:
-        result = current_opening["variations"][0][move_index][0]
-    except IndexError:
-        result = current_opening["variations"][1][move_index][0]
+    result = None 
+
+    for line in current_opening["variations"]: 
+        if not move_list: 
+            result = line[move_index][0]
+            break
+        elif len(move_list) > 0: 
+            try:
+                if line[move_index-1][1] == move_list[-1]:  
+                    result = line[move_index][0]
+                    break
+                else: 
+                    continue
+            except IndexError:
+                continue 
+   
+    if not result: 
+        result = engine.play(board, chess.engine.Limit(time=2.0))
+        board.push(result.move)
+    else:
+        board.push_san(result)
     engine_list.append(result)
-    board.push_san(result)
     display.update(board.fen(), game_board)
     sleep(1)
+
+    # try:
+    #     result = current_opening["variations"][0][move_index][0]
+    # except IndexError:
+    #     result = current_opening["variations"][1][move_index][0]
+   
 
 
 def play_chess_game():
@@ -107,7 +129,7 @@ def play_chess_game():
                 print("Check")
         
         if user_color == "black":
-            opening_moves(board, game_board, engine_list, current_opening)
+            opening_moves(board, game_board, engine_list, current_opening, move_list, engine)
             if check_if_game_ends(board):
                 winner = "white"
                 break
