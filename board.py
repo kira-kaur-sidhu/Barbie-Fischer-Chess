@@ -13,7 +13,7 @@ import chess.engine
 # Initalize chessboard display
 from chessboard import display
 from time import sleep
-import sys
+from openings import opening_table
 
 
 def check_if_game_ends(board):
@@ -45,15 +45,17 @@ def check_if_game_ends(board):
 
 def user_moves(board, game_board, move_list):
     new_move = input("Input your move: " )
-    move_list.append(new_move)
     
     try:
         board.push_san(new_move)
+        move_list.append(new_move)
         display.update(board.fen(), game_board)
     except chess.IllegalMoveError:
         print("Illegal Move Error!")
-        return "continue" ## continue
+        user_moves(board, game_board, move_list)
+        
     sleep(1)
+    return
 
 def engine_moves(board, game_board, engine_list, engine):
     result = engine.play(board, chess.engine.Limit(time=2.0))
@@ -62,8 +64,48 @@ def engine_moves(board, game_board, engine_list, engine):
     display.update(board.fen(), game_board)
     sleep(1)
 
+def opening_moves(board, game_board, engine_list, current_opening, move_list, engine):
+    move_index = len(engine_list) + 1 
+    result = None 
+
+    for line in current_opening["variations"]: 
+        if not move_list: 
+            print("Moved")
+            result = line[move_index][0]
+            board.push_san(result)
+            break
+        elif len(move_list) > 0: 
+            try:
+                if line[move_index-1][1] == move_list[-1] and engine_list[-1] == line[move_index-1][0]:
+                    try:
+                        print("Moved")
+                        result = line[move_index][0]
+                        board.push_san(result)
+                        break
+                    except chess.IllegalMoveError:
+                        continue
+                else: 
+                    continue
+            except IndexError:
+                continue 
+
+    if not result: 
+        result = engine.play(board, chess.engine.Limit(time=2.0))
+        board.push(result.move)
+
+    engine_list.append(result)
+    display.update(board.fen(), game_board)
+    sleep(1)
+
+
+
 def play_chess_game():
     user_color = input("Do you want to play as white or black? ")
+    engine_opening = input("What opening do you want to play against? ")
+
+    for item in opening_table:
+        if engine_opening == item["name"]:
+            current_opening = item
 
     board = chess.Board()
     engine = chess.engine.SimpleEngine.popen_uci("stockfish")
@@ -74,8 +116,7 @@ def play_chess_game():
         game_board = display.start(board.fen())
 
         if user_color == "white":
-            if user_moves(board, game_board, move_list) == "continue":
-                continue
+            user_moves(board, game_board, move_list)
             if check_if_game_ends(board):
                 winner = "white"
                 break
@@ -90,15 +131,14 @@ def play_chess_game():
                 print("Check")
         
         if user_color == "black":
-            engine_moves(board, game_board, engine_list, engine)
+            opening_moves(board, game_board, engine_list, current_opening, move_list, engine)
             if check_if_game_ends(board):
                 winner = "white"
                 break
             elif board.is_check():
                 print("Check")
             
-            if user_moves(board, game_board, move_list) == "continue":
-                continue
+            user_moves(board, game_board, move_list)
             if check_if_game_ends(board):
                 winner = "black"
                 break
