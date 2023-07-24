@@ -45,15 +45,17 @@ def check_if_game_ends(board):
 
 def user_moves(board, game_board, move_list):
     new_move = input("Input your move: " )
-    move_list.append(new_move)
     
     try:
         board.push_san(new_move)
+        move_list.append(new_move)
         display.update(board.fen(), game_board)
     except chess.IllegalMoveError:
         print("Illegal Move Error!")
-        return "continue" ## continue
+        user_moves(board, game_board, move_list)
+        
     sleep(1)
+    return
 
 def engine_moves(board, game_board, engine_list, engine):
     result = engine.play(board, chess.engine.Limit(time=2.0))
@@ -68,13 +70,20 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
 
     for line in current_opening["variations"]: 
         if not move_list: 
+            print("Moved")
             result = line[move_index][0]
+            board.push_san(result)
             break
         elif len(move_list) > 0: 
             try:
-                if line[move_index-1][1] == move_list[-1]:  
-                    result = line[move_index][0]
-                    break
+                if line[move_index-1][1] == move_list[-1] and engine_list[-1] == line[move_index-1][0]:
+                    try:
+                        print("Moved")
+                        result = line[move_index][0]
+                        board.push_san(result)
+                        break
+                    except chess.IllegalMoveError:
+                        continue
                 else: 
                     continue
             except IndexError:
@@ -83,8 +92,7 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
     if not result: 
         result = engine.play(board, chess.engine.Limit(time=2.0))
         board.push(result.move)
-    else:
-        board.push_san(result)
+
     engine_list.append(result)
     display.update(board.fen(), game_board)
     sleep(1)
@@ -108,8 +116,7 @@ def play_chess_game():
         game_board = display.start(board.fen())
 
         if user_color == "white":
-            if user_moves(board, game_board, move_list) == "continue":
-                continue
+            user_moves(board, game_board, move_list)
             if check_if_game_ends(board):
                 winner = "white"
                 break
@@ -131,8 +138,7 @@ def play_chess_game():
             elif board.is_check():
                 print("Check")
             
-            if user_moves(board, game_board, move_list) == "continue":
-                continue
+            user_moves(board, game_board, move_list)
             if check_if_game_ends(board):
                 winner = "black"
                 break

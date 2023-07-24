@@ -17,10 +17,10 @@ opening_table = [
             {
                 "name": "Ruy Lopez",
                 "variations": [
+                    [["Main"], ["e4", "e5"], ["Bb5", "a6"],["Ba4", "Nf6"], ["O-O", "Nxe4"], ["d4", "b5"], ["Bb3", "d5"], ["dxe5", "Be6"], ["Nbd2", "Nc5"], ["c3"]],
                     [["Marshall Attack"],["e4", "e5"], ["Nf3", "Nc6"], ["Bb5", "a6"], ["Ba4", "Nf6"], ["O-O", "Be7"], ["Re1", "b5"], ["Bb3", "O-O"], ["c3", "d5"], ["exd5", "Nxd5"], ["Nxe5", "Nxe5"], ["Rxe5", "c6"]],
                     [["Closed"],["e4", "e5"], ["Nf3", "Nc6"], ["Ba4", "Nf6"], ["O-O", "Be7"], ["Re1", "b5"], ["Bb3", "O-O"], ["a4"]],
                     [["Archangel"],["e4", "e5"], ["Nf3", "Nc6"], ["Bb5", "a6"], ["Ba4", "Nf6"], ["O-O", "b5"], ["Bb3", "Bb7"], ["d4", "Nxd4"], ["Nxd4", "exd4"], ["e5", "Ne4"], ["c3", "d3"]],
-                    [["Main"], ["e4", "e5"], ["Bb5", "a6"],["Ba4", "Nf6"], ["O-O", "Nxe4"], ["d4", "b5"], ["Bb3", "d5"], ["dxe5", "Be6"], ["Nbd2", "Nc5"], ["c3"]]
                 ]
             }
 ]
