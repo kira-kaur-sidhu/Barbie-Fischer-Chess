@@ -22,7 +22,7 @@ class ourEngine:
         self.thinking_time = thinking_time
         self.engine_color = engine_color
 
-    def evaluate(self, player):
+    def evaluate(self, player, board):
         piece_values = {
             "P": 1,
             "p": -1,
@@ -39,7 +39,7 @@ class ourEngine:
         }
         score = 0
         for square in chess.SQUARES:
-            piece = self.board.piece_at(square)
+            piece = board.piece_at(square)
             if piece:
                 if player == "white" and str(piece).isupper():
                         score += piece_values[str(piece)]
@@ -69,7 +69,7 @@ class ourEngine:
         board_copy = deepcopy(self.board)
         def minmax(board, depth, player):
             if depth == 0 or board.is_game_over():
-                return self.evaluate(player)
+                return self.evaluate(player, board)
             
             if player == "white":
                 maxEval = float('-inf')
