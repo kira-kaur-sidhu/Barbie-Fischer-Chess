@@ -149,6 +149,13 @@ from openings import opening_table
 # play_chess_game()
 
 board = chess.Board()
-engine = ourEngine(board, "white", 3)
+board.push_san('Nf3')
+board.push('e4')
+board.push('e5')
+board.push('d4')
+board.push('d5')
+
 game_board = display.start(board.fen())
-print(engine.search(3))
+# engine = ourEngine(board, "white", 3)
+
+# print(engine.search(board, 1, "white"))

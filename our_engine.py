@@ -22,7 +22,7 @@ class ourEngine:
         self.thinking_time = thinking_time
         self.engine_color = engine_color
 
-    def evaluate(self, player, board):
+    def evaluate(self, board):
         piece_values = {
             "P": 1,
             "p": -1,
@@ -41,13 +41,11 @@ class ourEngine:
         for square in chess.SQUARES:
             piece = board.piece_at(square)
             if piece:
-                if player == "white" and str(piece).isupper():
-                        score += piece_values[str(piece)]
-                elif player == "black" and str(piece).islower():
-                        score += piece_values[str(piece)]
+                score += piece_values[str(piece)]
+
         return score
     
-    def search(self, depth):
+    def search(self, board, depth, player):
         ## deepcopy of board
         # if depth == 0 or game ends(checkmate, stalemate, etc...)
             # RETURN call evaluation function (white or black, whatever engine is)
@@ -66,32 +64,37 @@ class ourEngine:
                 # minEval = min(minEval, eval)
             #RETURN minEval
         
-        board_copy = deepcopy(self.board)
-        def minmax(board, depth, player):
-            if depth == 0 or board.is_game_over():
-                return self.evaluate(player, board)
-            
-            if player == "white":
-                maxEval = float('-inf')
-                best_move_white = None
-                for move in list(board.legal_moves):
-                    board.push(move)
-                    eval = minmax(board, depth-1, "black")
-                    if max(maxEval, eval) == eval:
-                        maxEval = eval
-                        best_move_white = move
-                return best_move_white
-            
-            else:
-                minEval = float('inf')
-                best_move_white = None
-                for move in list(board.legal_moves):
-                    board.push(move)
-                    eval = minmax(board, depth-1, "white")
-                    if min(minEval, eval) == eval:
-                        minEval = eval
-                        best_move_black = move
-                return best_move_black
-            
-        player = self.engine_color
-        return minmax(board_copy, depth, player)
+        # board_copy = deepcopy(self.board)
+        if player == "white":
+            maxEval = float('-inf')
+            best_move_white = None
+            for move in list(board.legal_moves):
+                board_copy = deepcopy(board)
+                board_copy.push(move)
+                if depth > 1: 
+                    temp_result = self.search(board_copy, depth-1, "black")
+                    board_copy.push(temp_result)
+                
+                eval = self.evaluate(board_copy)
+
+
+                if max(maxEval, eval) == eval:
+                    maxEval = eval
+                    best_move_white = move
+            return best_move_white
+        
+        else:
+            minEval = float('inf')
+            best_move_black = None
+            for move in list(board.legal_moves):
+                board_copy = deepcopy(board)
+                board_copy.push(move)
+                if depth > 1: 
+                    temp_result = self.search(board_copy, depth-1, "white")
+                    board_copy.push(temp_result)
+                
+                eval = self.evaluate(board_copy)
+                if min(minEval, eval) == eval:
+                    minEval = eval
+                    best_move_black = move
+            return best_move_black
