@@ -16,7 +16,7 @@ from time import sleep
 from openings import opening_table
 from copy import deepcopy
 
-class ourEngine:
+class Testengine:
     def __init__(self, board, engine_color, thinking_time=0):
         self.board = board
         self.thinking_time = thinking_time
@@ -45,7 +45,7 @@ class ourEngine:
 
         return score
     
-    def search(self, board, depth, player, alpha=float("-inf"), beta=float("inf")):
+    def search(self, board, depth, player):
         ## deepcopy of board
         # if depth == 0 or game ends(checkmate, stalemate, etc...)
             # RETURN call evaluation function (white or black, whatever engine is)
@@ -72,14 +72,11 @@ class ourEngine:
                 board_copy = deepcopy(board)
                 board_copy.push(move)
                 if depth > 1: 
-                    temp_result = self.search(board_copy, depth-1, "black", alpha, beta)
+                    temp_result = self.search(board_copy, depth-1, "black")
                     board_copy.push(temp_result)
                 
                 eval = self.evaluate(board_copy)
 
-                alpha = max(alpha, eval)
-                if beta <= alpha: 
-                    return best_move_white
                 
                 if max(maxEval, eval) == eval:
                     maxEval = eval
@@ -93,15 +90,11 @@ class ourEngine:
                 board_copy = deepcopy(board)
                 board_copy.push(move)
                 if depth > 1: 
-                    temp_result = self.search(board_copy, depth-1, "white", alpha, beta)
+                    temp_result = self.search(board_copy, depth-1, "white")
                     board_copy.push(temp_result)
                 
-                eval = self.evaluate(board_copy)
-
-                beta = min(beta, eval)
-                if beta <= alpha: 
-                    return best_move_black
-
+                eval = self.evaluate(board_copy) 
+                
                 if min(minEval, eval) == eval:
                     minEval = eval
                     best_move_black = move
