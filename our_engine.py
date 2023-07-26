@@ -76,14 +76,14 @@ class ourEngine:
                     board_copy.push(temp_result)
                 
                 eval = self.evaluate(board_copy)
-
-                alpha = max(alpha, eval)
-                if beta <= alpha: 
-                    return best_move_white
                 
                 if max(maxEval, eval) == eval:
                     maxEval = eval
                     best_move_white = move
+                    
+                alpha = max(alpha, eval)
+                if beta <= alpha: 
+                    break
             return best_move_white
         
         else:
@@ -98,11 +98,11 @@ class ourEngine:
                 
                 eval = self.evaluate(board_copy)
 
-                beta = min(beta, eval)
-                if beta <= alpha: 
-                    return best_move_black
-
                 if min(minEval, eval) == eval:
                     minEval = eval
                     best_move_black = move
+
+                beta = min(beta, eval)
+                if beta <= alpha: 
+                    break
             return best_move_black

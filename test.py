@@ -155,14 +155,24 @@ from openings import opening_table
 # play_chess_game()
 
 board=chess.Board()
-# queensgam = opening_table[0]["variations"][0]
-# for i in range(1, len(queensgam)-5):
-#     board.push_san(queensgam[i][0])
-#     board.push_san(queensgam[i][1])
+queensgam = opening_table[0]["variations"][0]
+for i in range(1, len(queensgam)-5):
+    board.push_san(queensgam[i][0])
+    board.push_san(queensgam[i][1])
 board_copy = deepcopy(board)
 
-engine=ourEngine(board, "white", 5)
+# engine=ourEngine(board, "white", 5)
+# start=time.time()
+# board_copy.push(engine.search(board, 3, "white"))
+# end=time.time()
+# print(end-start)
+# game_board = display.start(board.fen())
+# sleep(10)
+
+test_engine=Testengine(board, "white", 5)
 start=time.time()
-board_copy.push(engine.search(board, 3, "white"))
+board_copy.push(test_engine.search(board, 3, "white"))
 end=time.time()
 print(end-start)
+game_board = display.start(board.fen())
+sleep(10)
