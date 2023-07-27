@@ -14,7 +14,7 @@ import chess.engine
 from chessboard import display
 from time import sleep
 from openings import opening_table
-
+from our_engine import ourEngine
 
 def check_if_game_ends(board):
     if board.is_checkmate():
@@ -58,11 +58,8 @@ def user_moves(board, game_board, move_list):
     return
 
 def engine_moves(board, game_board, engine_list, engine):
-    result = engine.play(board, chess.engine.Limit(time=2.0))
-    engine_list.append(result)
-    board.push(result.move)
-    display.update(board.fen(), game_board)
-    sleep(1)
+    engine = ourEngine(board, "white")
+    engine.evaluation("white")
 
 def opening_moves(board, game_board, engine_list, current_opening, move_list, engine):
     move_index = len(engine_list) + 1 
@@ -70,7 +67,6 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
 
     for line in current_opening["variations"]: 
         if not move_list: 
-            print("Moved")
             result = line[move_index][0]
             board.push_san(result)
             break
@@ -78,7 +74,6 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
             try:
                 if line[move_index-1][1] == move_list[-1] and engine_list[-1] == line[move_index-1][0]:
                     try:
-                        print("Moved")
                         result = line[move_index][0]
                         board.push_san(result)
                         break
@@ -90,8 +85,8 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
                 continue 
 
     if not result: 
-        result = engine.play(board, chess.engine.Limit(time=2.0))
-        board.push(result.move)
+        result = engine.search(board, 3, "white")
+        board.push(result)
 
     engine_list.append(result)
     display.update(board.fen(), game_board)
@@ -108,7 +103,7 @@ def play_chess_game():
             current_opening = item
 
     board = chess.Board()
-    engine = chess.engine.SimpleEngine.popen_uci("stockfish")
+    engine = ourEngine(board, "white", 3)
     move_list = []
     engine_list = []
 
