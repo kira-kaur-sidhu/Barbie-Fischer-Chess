@@ -12,7 +12,6 @@ import chess.syzygy
 import chess.engine
 # our engine
 from our_engine import ourEngine
-from test_our_engine import Testengine
 from copy import deepcopy
 
 # Initalize chessboard display
