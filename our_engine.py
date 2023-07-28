@@ -45,7 +45,7 @@ class ourEngine:
 
         return score
     
-    def search(self, board, depth, player, alpha=float("-inf"), beta=float("inf")):
+    def search(self, board, depth, engine_color, alpha=float("-inf"), beta=float("inf")):
         ## deepcopy of board
         # if depth == 0 or game ends(checkmate, stalemate, etc...)
             # RETURN call evaluation function (white or black, whatever engine is)
@@ -65,7 +65,7 @@ class ourEngine:
             #RETURN minEval
         
         # board_copy = deepcopy(self.board)
-        if player == "white":
+        if engine_color == "white":
             maxEval = float("-inf")
             best_move_white = None
             for move in list(board.legal_moves):
