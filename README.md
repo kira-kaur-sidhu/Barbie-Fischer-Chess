@@ -1,2 +1,2 @@
-# jasmine-kim-kira-sarah-chess-engine
+# Barbie Fischer
 Ada Capstone
