@@ -5,8 +5,9 @@ class Game(db.Model):
     opening = db.Column(db.String)
     board_init = db.Column(db.PickleType)
     fen = db.Column(db.String)
-    is_complete = db.Column(db.Boolean, default=False)
+    game_status = db.Column(db.String, default="In Progress")
     move_list = db.Column(db.ARRAY(db.String()), default=[])
+    current_player = db.Column(db.String)
 
     def to_dict(self): 
         response_format = {
@@ -15,7 +16,8 @@ class Game(db.Model):
             "board_init" : self.board_init,
             "fen" : self.fen,
             "move_list" : self.move_list, 
-            "is_complete": self.is_complete
+            "game_status": self.game_status,
+            "current_player": self.current_player
         }
         return response_format
     
@@ -25,5 +27,6 @@ class Game(db.Model):
             openning=game_data["opening"],
             fen=game_data["fen"],
             move_list=game_data["move_list"],
-            is_complete=game_data["is_complete"]
+            game_status=game_data["game_status"],
+            current_player=game_data["current_player"]
         )
