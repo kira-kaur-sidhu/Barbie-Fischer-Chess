@@ -17,6 +17,8 @@ def validate_item(model, item_id):
     
     return model.query.get_or_404(item_id)
 
+# nested helper function
+    # check if checkmate, game over, etc...
 def check_game_status(request_body):
     if request_body["board"].is_checkmate():
         return "Checkmate"
@@ -44,6 +46,7 @@ def check_game_status(request_body):
         # update move lust
     # if player is white
         # initalize board to inital fen
+
 @game_bp("/<game_id>/games", methods=["POST"])
 def start_game(game_id):
 
@@ -88,21 +91,29 @@ def get_user_move(game_id):
         # should update fen
         # update move list
     # Player gets engine move from fen
-        # should update their board
+        # board at FE should update their board using fen
 
-# nested helper function
-    # check if checkmate, game over, etc...
+# @game_bp.route("/<game_id>", methods=["GET"])
+# def get_engine_move(game_id):
+#     game = validate_item(Game, game_id)
+
+#     if game.game_status == "In Progress": 
+
+
+    # request_body = request.get_json()
+
+    # current_status = check_game_status(request_body)
+    # if current_status:
+    #     request_body["game_status"] = current_status
 
 # DELETE ROUTE
     # delete after game has been completed
-@game_bp.route("/<game_id>", methods=["GET"])
-def call_engine(game_id):
+
+@game_bp.route("/<game_id>", methods=["DELETE"])
+def delete_game(game_id): 
     game = validate_item(Game, game_id)
 
-    request_body = request.get_json()
+    db.session.delete(game)
+    db.session.commit()
 
-    current_status = check_game_status(request_body)
-    if current_status:
-        request_body["game_status"] = current_status
-    
-    
+    return{"details": f"Game {game_id} deleted"}, 200 
