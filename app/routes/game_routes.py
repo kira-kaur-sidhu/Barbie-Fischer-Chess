@@ -93,6 +93,14 @@ def get_user_move(game_id):
     # Player gets engine move from fen
         # board at FE should update their board using fen
 
+#PATCH ROUTE for engine move 
+    # call engine to play 
+    #capture the board.fen after engine plays and update fen in database 
+
+# GET ROUTE
+    # Player gets engine move from fen
+        # board at FE should update their board using fen
+
 # @game_bp.route("/<game_id>", methods=["GET"])
 # def get_engine_move(game_id):
 #     game = validate_item(Game, game_id)
