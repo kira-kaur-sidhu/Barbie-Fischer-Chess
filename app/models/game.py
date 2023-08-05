@@ -6,9 +6,11 @@ class Game(db.Model):
     board_init = db.Column(db.PickleType)
     fen = db.Column(db.String)
     game_status = db.Column(db.String, default="In Progress")
-    move_list = db.Column(db.ARRAY(db.String()), default=[])
+    user_move_list = db.Column(db.ARRAY(db.String()), default=[])
+    engine_move_list = db.Column(db.ARRAY(db.String()), default=[])
     current_player = db.Column(db.String)
     user_move = db.Column(db.String, default="")
+    
 
     def to_dict(self): 
         response = {
@@ -17,6 +19,8 @@ class Game(db.Model):
             "fen" : self.fen,
             "game_status": self.game_status,
             "current_player": self.current_player,
+            "user_move_list":self.user_move_list,
+            "engine_move_list":self.engine_move_list
         }
         return response
     
