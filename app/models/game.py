@@ -8,25 +8,22 @@ class Game(db.Model):
     game_status = db.Column(db.String, default="In Progress")
     move_list = db.Column(db.ARRAY(db.String()), default=[])
     current_player = db.Column(db.String)
+    user_move = db.Column(db.String, default="")
 
     def to_dict(self): 
-        response_format = {
+        response = {
             "game_id" : self.game_id,
             "opening" : self.opening,
-            "board_init" : self.board_init,
             "fen" : self.fen,
-            "move_list" : self.move_list, 
             "game_status": self.game_status,
-            "current_player": self.current_player
+            "current_player": self.current_player,
         }
-        return response_format
+        return response
     
     @classmethod
     def from_dict(cls, game_data): 
         return cls(
-            openning=game_data["opening"],
-            fen=game_data["fen"],
-            move_list=game_data["move_list"],
-            game_status=game_data["game_status"],
+            opening=game_data["opening"],
+            user_move=game_data["user_move"],
             current_player=game_data["current_player"]
         )

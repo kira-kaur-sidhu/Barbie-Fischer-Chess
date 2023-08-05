@@ -16,6 +16,15 @@ from time import sleep
 from openings import opening_table
 from our_engine import ourEngine
 
+def validate_user_moves(board, user_move, move_list):
+    try:
+        board.push_san(user_move)
+        move_list.append(user_move)
+    except chess.IllegalMoveError:
+        return False
+
+    return True
+
 def engine_moves(board, game_board, engine_list, engine):
     engine = ourEngine(board, "white")
     engine.evaluation("white")

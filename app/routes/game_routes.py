@@ -3,6 +3,7 @@ import os
 from app.models.game import Game 
 from flask import Blueprint, make_response, request, jsonify, abort 
 import chess
+from flask_engine_call import validate_user_moves
 
 game_bp = Blueprint("games", __name__, url_prefix="/games") 
 
@@ -19,22 +20,22 @@ def validate_item(model, item_id):
 
 # nested helper function
     # check if checkmate, game over, etc...
-def check_game_status(request_body):
-    if request_body["board"].is_checkmate():
+def check_game_status(board):
+    if board.is_checkmate():
         return "Checkmate"
-    if request_body["board"].is_stalemate():
+    if board.is_stalemate():
         return "Stalemate"
-    if request_body["board"].is_insufficient_material():
+    if board.is_insufficient_material():
         return "Insufficient Material"
-    if request_body["board"].can_claim_draw():
+    if board.can_claim_draw():
         return "Can Claim Draw"
-    if request_body["board"].can_claim_threefold_repetition():
+    if board.can_claim_threefold_repetition():
         return "Can Claim Threefold Repetition"
-    if request_body["board"].can_claim_fifty_moves():
+    if board.can_claim_fifty_moves():
         return "Can Claim Fifty Moves"
-    if request_body["board"].is_fivefold_repetition():
+    if board.is_fivefold_repetition():
         return "Is Fivefold Repetition"
-    if request_body["board"].is_seventyfive_moves():
+    if board.is_seventyfive_moves():
         return "Completed 75 Moves"
     return None
 
@@ -72,14 +73,15 @@ def get_user_move(game_id):
 
     request_body = request.get_json()
 
-    current_status = check_game_status(request_body)
+    validation = validate_user_moves(game.board_init, request_body["user_move"], game.move_list)
+    if not validation:
+        return {"details": "Invalid move"}, 401
+
+    current_status = check_game_status(game.board_init)
     if current_status:
-        request_body["game_status"] = current_status
-    
-    game.fen = request_body["fen"]
-    game.board_init = chess.Board(game.fen)
-    game.move_list.append(request_body["move_list"][-1])
-    # game.current_player <-- do later
+        game.game_status = current_status
+
+    game.current_player = "engine"
 
     db.session.commit()
 
