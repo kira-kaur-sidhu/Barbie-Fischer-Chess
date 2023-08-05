@@ -3,7 +3,6 @@ from app import db
 class Game(db.Model): 
     game_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     opening = db.Column(db.String)
-    board_init = db.Column(db.PickleType)
     fen = db.Column(db.String)
     game_status = db.Column(db.String, default="In Progress")
     user_move_list = db.Column(db.ARRAY(db.String()), default=[])
@@ -28,6 +27,6 @@ class Game(db.Model):
     def from_dict(cls, game_data): 
         return cls(
             opening=game_data["opening"],
-            user_move=game_data["user_move"],
-            current_player=game_data["current_player"]
+            current_player=game_data["current_player"],
+            fen=game_data["fen"]
         )

@@ -8,7 +8,6 @@ db = SQLAlchemy()
 migrate = Migrate()
 load_dotenv()
 
-
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -21,15 +20,13 @@ def create_app(test_config=None):
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
             "SQLALCHEMY_TEST_DATABASE_URI")
         
-    from app.models.game import Game
+    from .models.game import Game
 
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # from .routes.task_routes import task_bp
-    # app.register_blueprint(task_bp)
-
-    # from .routes.goal_routes import goal_bp
-    # app.register_blueprint(goal_bp)
+    from app.routes.game_routes import game_bp
+    app.register_blueprint(game_bp)
     
     return app
+    

@@ -3,11 +3,64 @@ import os
 from app.models.game import Game 
 from flask import Blueprint, make_response, request, jsonify, abort 
 import chess
-from flask_engine_call import validate_user_moves
+# temporary engine
+import chess.engine
+# Initalize chessboard display
+from chessboard import display
+from time import sleep
+from openings import opening_table
+from our_engine import ourEngine
 
-game_bp = Blueprint("games", __name__, url_prefix="/games") 
+game_bp = Blueprint("game_bp", __name__, url_prefix="/games") 
 
 # fix board.py for back and forth play
+class ChessGame:
+    def __init__(self, random=True):
+        self.random = random
+
+    def validate_user_moves(self, board, user_move, move_list):
+        try:
+            board.push_san(user_move)
+            move_list.append(user_move)
+        except chess.IllegalMoveError:
+            return False
+
+        return True
+
+    def engine_moves(board, game_board, engine_list, engine):
+        engine = ourEngine(board, "white")
+        engine.evaluation("white")
+
+    def opening_moves(board, game_board, engine_list, current_opening, move_list, engine):
+        move_index = len(engine_list) + 1 
+        result = None 
+
+        for line in current_opening["variations"]: 
+            if not move_list: 
+                result = line[move_index][0]
+                board.push_san(result)
+                break
+            elif len(move_list) > 0: 
+                try:
+                    if line[move_index-1][1] == move_list[-1] and engine_list[-1] == line[move_index-1][0]:
+                        try:
+                            result = line[move_index][0]
+                            board.push_san(result)
+                            break
+                        except chess.IllegalMoveError:
+                            continue
+                    else: 
+                        continue
+                except IndexError:
+                    continue 
+
+        if not result: 
+            result = engine.search(board, 3, "white")
+            board.push(result)
+
+        engine_list.append(result)
+        display.update(board.fen(), game_board)
+        sleep(1)
 
 # validating function
 def validate_item(model, item_id):
@@ -48,19 +101,19 @@ def check_game_status(board):
     # if player is white
         # initalize board to inital fen
 
-@game_bp("/<game_id>/games", methods=["POST"])
-def start_game(game_id):
-
-    new_game = chess.Board()
-
+@game_bp.route("", methods=["POST"])
+def start_game():
     request_body = request.get_json()
-    request_body["board"] = new_game
-    request_body["fen"] = new_game.fen
-    request_body["status"] = "In Progress"
+    new_board = chess.Board()
 
+    request_body["fen"] = new_board.fen()
+
+    new_game = Game.from_dict(request_body)
+
+    db.session.add(new_game)
     db.session.commit()
 
-    return {"id": int(game_id)}, 200
+    return {"id": int(new_game.game_id)}, 200
 
 # PATCH ROUTE
     # When player moves
@@ -73,9 +126,11 @@ def get_user_move(game_id):
 
     request_body = request.get_json()
 
-    validation = validate_user_moves(game.board_init, request_body["user_move"], game.move_list)
+    validation = ChessGame.validate_user_moves(game.board_init, request_body["user_move"], game.move_list)
     if not validation:
         return {"details": "Invalid move"}, 401
+    else:
+        game.fen = validation.fen()
 
     current_status = check_game_status(game.board_init)
     if current_status:
@@ -87,6 +142,15 @@ def get_user_move(game_id):
 
     return {"game": game.to_dict()}, 200
 
+@game_bp.route("", methods=["GET"])
+def get_games():
+    response = []
+
+    all_games = Game.query.all()
+
+    response = [game.to_dict() for game in all_games]
+
+    return jsonify(response), 200
 
 # GET ROUTE
     # call engine to play

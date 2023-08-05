@@ -43,3 +43,6 @@ from openings import opening_table
 # print(end-start)
 # game_board = display.start(board.fen())
 # sleep(10)
+
+new_board = chess.Board()
+print(new_board.fen())
