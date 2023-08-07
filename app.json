@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "barbie-fischer-frontend",
+    "owner": "chessappcapstone",
     "slug": "barbie-fischer-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
