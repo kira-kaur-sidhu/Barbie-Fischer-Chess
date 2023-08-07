@@ -83,14 +83,6 @@ def check_game_status(board):
         return "Completed 75 Moves"
     return None
 
-# POST ROUTE
-    # When player clicks on new game
-    # create a board python-chess board
-    # if engine is white player, add first engine move
-        # fen should be new board fen
-        # update move lust
-    # if player is white
-        # initalize board to inital fen
 
 @game_bp.route("", methods=["POST"])
 def start_game():
@@ -106,11 +98,6 @@ def start_game():
 
     return {"id": int(new_game.game_id)}, 200
 
-# PATCH ROUTE
-    # When player moves
-        # should update fen
-        # should update board
-        # update move list
 @game_bp.route("/<game_id>", methods=["PATCH"])
 def get_user_move(game_id):
     game = validate_item(Game, game_id)
@@ -119,9 +106,9 @@ def get_user_move(game_id):
 
     game.fen = request_body["fen"]
 
-    current_status = check_game_status(game.board_init)
-    if current_status:
-        game.game_status = current_status
+    # current_status = check_game_status(game.board_init)
+    # if current_status:
+    #     game.game_status = current_status
 
     game.current_player = "engine"
 
@@ -139,30 +126,27 @@ def get_games():
 
     return jsonify(response), 200
 
-# GET ROUTE
-    # call engine to play
-        # should update fen
-        # update move list
-    # Player gets engine move from fen
-        # board at FE should update their board using fen
 
 @game_bp.route("/<game_id>", methods=["GET"])
 def get_engine_move(game_id):
     game = validate_item(Game, game_id)
     current_board = chess.Board(game.fen)
     continue_game = ChessGame
-    current_status = check_game_status(current_board)
-    if current_status:
-        game.game_status = current_status
+    # current_status = check_game_status(current_board)
+    # if current_status:
+    #     game.game_status = current_status
 
-    game.fen = continue_game.opening_moves(current_board, game.engine_move_list, game.opening, game.user_move_list, ourEngine)
+    for item in opening_table:
+        if game.opening == item["name"]:
+            current_opening = item
+
+    game.fen = continue_game.opening_moves(current_board, game.engine_move_list, current_opening, game.user_move_list, ourEngine)
+    game.current_player = "player"
 
     response = game.to_dict() 
 
     return jsonify(response), 200 
 
-# DELETE ROUTE
-    # delete after game has been completed
 
 @game_bp.route("/<game_id>", methods=["DELETE"])
 def delete_game(game_id): 
