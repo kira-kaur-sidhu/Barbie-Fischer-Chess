@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler'
 import Chessboard from 'react-native-chessboard';
 
 const Game = () => {
-    const ExampleWithHoc = gestureHandlerRootHOC(() => (
+    const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
                 colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
             />
@@ -15,9 +15,26 @@ const Game = () => {
 
     return (
         <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
-            <View style={styles.chessBox}>
-                <ExampleWithHoc />
+            <View style={styles.chessWrapTop}>
+                <Text>Barbie</Text>
+            </View>
+            <ChessBoardRender 
+            style={styles.chessBox}/>
+            <View style={styles.chessWrapBottom}>
+                <Text>You</Text>
+            </View>
+            <View style={styles.infoButtons}>
+                <View></View>
+                <View style={styles.buttons}>
+                    <Button 
+                    title="Confirm"/>
+                    <View style={styles.space} />
+                    <Button
+                    title="Undo"/>
+                    <View style={styles.space} />
+                    <Button
+                    title="Resign"/>
+                </View>
             </View>
         </View>
     )
@@ -25,10 +42,30 @@ const Game = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    chessBox: {
+    },
+    chessWrapTop: {
+        backgroundColor: '#F3BAD5',
+        height: 50,
+        width: '100%',
+    },
+    chessWrapBottom: {
+        backgroundColor: '#F3BAD5',
+        height: 50,
+        width: '100%',
+        marginTop: 405,
+    },
+    buttons: {
+        padding: 10,
+        margin: 20,
+    },
+    space: {
+        width: 20,
+        height: 20,
     },
 });
 
