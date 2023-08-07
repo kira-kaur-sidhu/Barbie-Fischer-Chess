@@ -4,6 +4,7 @@ class Game(db.Model):
     game_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     opening = db.Column(db.String)
     fen = db.Column(db.String)
+    # board_init = db.Column(db.PickleType(),)
     game_status = db.Column(db.String, default="In Progress")
     user_move_list = db.Column(db.ARRAY(db.String()), default=[])
     engine_move_list = db.Column(db.ARRAY(db.String()), default=[])

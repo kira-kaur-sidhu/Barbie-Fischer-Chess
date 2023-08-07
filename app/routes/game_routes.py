@@ -18,20 +18,11 @@ class ChessGame:
     def __init__(self, random=True):
         self.random = random
 
-    def validate_user_moves(self, board, user_move, move_list):
-        try:
-            board.push_san(user_move)
-            move_list.append(user_move)
-        except chess.IllegalMoveError:
-            return False
-
-        return True
-
     def engine_moves(board, game_board, engine_list, engine):
         engine = ourEngine(board, "white")
         engine.evaluation("white")
 
-    def opening_moves(board, game_board, engine_list, current_opening, move_list, engine):
+    def opening_moves(board, engine_list, current_opening, move_list, engine):
         move_index = len(engine_list) + 1 
         result = None 
 
@@ -59,8 +50,8 @@ class ChessGame:
             board.push(result)
 
         engine_list.append(result)
-        display.update(board.fen(), game_board)
-        sleep(1)
+        return board.fen()
+        
 
 # validating function
 def validate_item(model, item_id):
@@ -126,11 +117,7 @@ def get_user_move(game_id):
 
     request_body = request.get_json()
 
-    validation = ChessGame.validate_user_moves(game.board_init, request_body["user_move"], game.move_list)
-    if not validation:
-        return {"details": "Invalid move"}, 401
-    else:
-        game.fen = validation.fen()
+    game.fen = request_body["fen"]
 
     current_status = check_game_status(game.board_init)
     if current_status:
@@ -159,26 +146,20 @@ def get_games():
     # Player gets engine move from fen
         # board at FE should update their board using fen
 
-#PATCH ROUTE for engine move 
-    # call engine to play 
-    #capture the board.fen after engine plays and update fen in database 
+@game_bp.route("/<game_id>", methods=["GET"])
+def get_engine_move(game_id):
+    game = validate_item(Game, game_id)
+    current_board = chess.Board(game.fen)
+    continue_game = ChessGame
+    current_status = check_game_status(current_board)
+    if current_status:
+        game.game_status = current_status
 
-# GET ROUTE
-    # Player gets engine move from fen
-        # board at FE should update their board using fen
+    game.fen = continue_game.opening_moves(current_board, game.engine_move_list, game.opening, game.user_move_list, ourEngine)
 
-# @game_bp.route("/<game_id>", methods=["GET"])
-# def get_engine_move(game_id):
-#     game = validate_item(Game, game_id)
+    response = game.to_dict() 
 
-#     if game.game_status == "In Progress": 
-
-
-    # request_body = request.get_json()
-
-    # current_status = check_game_status(request_body)
-    # if current_status:
-    #     request_body["game_status"] = current_status
+    return jsonify(response), 200 
 
 # DELETE ROUTE
     # delete after game has been completed
