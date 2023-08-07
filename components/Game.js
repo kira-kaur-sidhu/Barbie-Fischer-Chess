@@ -2,8 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
-import 'react-native-gesture-handler';
-import {gestureHandlerRootHOC} from 'react-native-gesture-handler'
+import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard from 'react-native-chessboard';
 
 const Game = () => {
@@ -14,12 +13,12 @@ const Game = () => {
     ));
 
     return (
+        <GestureHandlerRootView>
         <View style={styles.container}>
             <View style={styles.chessWrapTop}>
                 <Text>Barbie</Text>
             </View>
-            <ChessBoardRender 
-            style={styles.chessBox}/>
+            <ChessBoardRender />
             <View style={styles.chessWrapBottom}>
                 <Text>You</Text>
             </View>
@@ -37,6 +36,7 @@ const Game = () => {
                 </View>
             </View>
         </View>
+        </GestureHandlerRootView>
     )
 }
 
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 10,
     },
     chessBox: {
     },
