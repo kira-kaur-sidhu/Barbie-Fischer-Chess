@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 //     })
 //     }, []);
 
-const Game = () => {
+const Opening = ({ route, navigation }) => {
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
     const API = "some route here"
     const [currentFen, updateFen] = useState(initialFen); 
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Game;
+export default Opening;
