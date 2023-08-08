@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './components/Home';
 import Game from './components/Game';
+import Practice from './components/Practice';
 
 const Stack = createNativeStackNavigator()
 
@@ -18,6 +19,11 @@ const Navigator = (props) => {
                 name="Game"
                 component={Game}
                 options={{title: "Game Page"}}
+            />
+            <Stack.Screen
+                name="Practice"
+                component={Practice}
+                options={{title: "Practice Page"}}
             />
         </Stack.Navigator>
     )

@@ -4,11 +4,30 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard from 'react-native-chessboard';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
+
+
+// useEffect(() => {
+//     axios.get(`${API}/board`) // this would return fen string from either opening or engine
+//     .then((result) => {
+//         updateFen(result.data);
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     })
+//     }, []);
 
 const Game = () => {
+    const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    const API = "some route here"
+    const [currentFen, updateFen] = useState(initialFen); 
+    
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
                 colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
+                fen={ currentFen } 
             />
     ));
 

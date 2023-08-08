@@ -18,7 +18,7 @@ const Home = ({ navigation }) => {
                 <Button
                     color='#ED1B80'
                     title="Get Started"
-                    onPress={() => navigation.navigate('Game')}
+                    onPress={() => navigation.navigate('Practice')}
                 />
             </View>
         </View>

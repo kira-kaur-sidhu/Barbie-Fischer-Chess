@@ -6,12 +6,15 @@ import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler'
 import Chessboard from 'react-native-chessboard';
 import Navigator from './Navigator';
+import { NativeBaseProvider } from 'native-base';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Navigator/>
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <NavigationContainer>
+        <Navigator/>
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 }
 
