@@ -89,7 +89,7 @@ const Practice = ({ navigation }) => {
                 </Modal.Content>
             </Modal>
             <Text>You're playing as {colorChoice}.</Text>
-            <Text>The opening is {opening}.</Text>
+            <Text>The opening is {openingChoice}.</Text>
             <Button onPress={() => navigation.navigate('Opening', {opening: openingChoice, color: colorChoice,})}>START PLAYING</Button>
         </Center>
     )
