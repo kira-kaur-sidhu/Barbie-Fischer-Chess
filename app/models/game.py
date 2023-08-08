@@ -7,7 +7,7 @@ class Game(db.Model):
     game_status = db.Column(db.String, default="In Progress")
     user_move_list = db.Column(db.ARRAY(db.String()), default=[])
     engine_move_list = db.Column(db.ARRAY(db.String()), default=[])
-    current_player = db.Column(db.String)
+    white = db.Column(db.String)
     user_move = db.Column(db.String, default="")
     
 
@@ -17,7 +17,6 @@ class Game(db.Model):
             "opening" : self.opening,
             "fen" : self.fen,
             "game_status": self.game_status,
-            "current_player": self.current_player,
             "user_move_list":self.user_move_list,
             "engine_move_list":self.engine_move_list
         }
@@ -27,6 +26,7 @@ class Game(db.Model):
     def from_dict(cls, game_data): 
         return cls(
             opening=game_data["opening"],
-            current_player=game_data["current_player"],
-            fen=game_data["fen"]
+            white=game_data["white"],
+            fen=game_data["fen"],
+            engine_move_list=game_data["engine_move_list"]
         )
