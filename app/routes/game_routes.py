@@ -49,8 +49,9 @@ class ChessGame:
             result = engine.search(board, 3, "white")
             board.push(result)
 
-        engine_list.append(result)
-        return board.fen()
+        new_engine_list = engine_list[:]
+        new_engine_list.append(result)
+        return board.fen(), new_engine_list
         
 
 # validating function
@@ -140,10 +141,14 @@ def get_engine_move(game_id):
         if game.opening == item["name"]:
             current_opening = item
 
-    game.fen = continue_game.opening_moves(current_board, game.engine_move_list, current_opening, game.user_move_list, ourEngine)
+    data = continue_game.opening_moves(current_board, game.engine_move_list, current_opening, game.user_move_list, ourEngine)
+    game.fen = data[0]
+    game.engine_move_list = data[1]
     game.current_player = "player"
 
     response = game.to_dict() 
+
+    db.session.commit()
 
     return jsonify(response), 200 
 

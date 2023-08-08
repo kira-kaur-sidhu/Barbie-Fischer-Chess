@@ -46,6 +46,4 @@ from openings import opening_table
 
 new_board = chess.Board("rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1")
 new_board.push_san("d5")
-game_board = display.start(new_board.fen())
-sleep(10)
-display.terminate()
+print(new_board.fen())
