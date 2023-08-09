@@ -44,7 +44,7 @@ def start_game():
 
 # PATCH route to receive user move and send back engine move
 @game_bp.route("/<game_id>", methods=["PATCH"])
-def get_user_move(game_id):
+def get_user_engine_move(game_id):
     game = validate_item(Game, game_id)
 
     request_body = request.get_json()
@@ -69,6 +69,10 @@ def get_user_move(game_id):
         data = new_game.opening_moves(new_board, current_opening, game.engine_move_list, game.user_move_list, engine_color)
         game.fen = data[0]
         game.engine_move_list = data[1]
+        updated_board = chess.Board(game.fen)
+        current_status = new_game.check_game_status(updated_board)
+        if current_status:
+            game.game_status = current_status
 
     db.session.commit()
 
