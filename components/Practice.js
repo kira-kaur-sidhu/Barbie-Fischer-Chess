@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 
+
 const Practice = ({ navigation }) => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);

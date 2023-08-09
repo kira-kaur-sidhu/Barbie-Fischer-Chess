@@ -6,6 +6,7 @@ import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gestur
 import Chessboard from 'react-native-chessboard';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 
 // useEffect(() => {
@@ -20,13 +21,43 @@ import { useEffect } from 'react';
 
 const Opening = ({ route, navigation }) => {
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-    const API = "some route here"
+    const API = 'https://barbie-fischer-chess.onrender.com'
     const [currentFen, updateFen] = useState(initialFen); 
+    const whitePlayer = route.color === 'white' ? 'user' : 'engine'; 
+    
+    useEffect(() => {
+        axios.post(`${API}/games`, {"white": "engine", "opening": "Queen's Gambit" }) // this would return fen string from either opening or engine
+        .then((result) => {
+            console.log("We're inside the axios post call")
+            console.log(result.data.fen);
+            updateFen(result.data.fen);
+            // store game id in a var to use in patch request
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, []);
+
+    const getEngineMove = (fen) => {
+        console.log("Were in get Engine move function")
+        updateFen(fen);
+        console.log(fen);
+        axios.patch(`${API}/games/2`, {"fen": currentFen})
+        .then((result) => {
+            console.log("We're inside the axios patch call")
+            console.log(result.data.fen);
+            updateFen(result.data.fen)
+        })
+        .catch((err) => {
+        console.log(err); 
+        })
+    };
     
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
                 colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
                 fen={ currentFen } 
+                onMove={()=> getEngineMove(this.fen)}
             />
         )
     );
