@@ -40,7 +40,7 @@ def start_game():
     db.session.add(game)
     db.session.commit()
 
-    return {"id": int(game.game_id)}, 200
+    return jsonify(game.to_dict()), 200
 
 # PATCH route to receive user move and send back engine move
 @game_bp.route("/<game_id>", methods=["PATCH"])
