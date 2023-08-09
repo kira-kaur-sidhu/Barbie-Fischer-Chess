@@ -23,6 +23,7 @@ const Opening = ({ route, navigation }) => {
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
     const API = 'https://barbie-fischer-chess.onrender.com'
     const [currentFen, updateFen] = useState(initialFen); 
+    const [gameID, updateGameID] = useState();
     const whitePlayer = route.color === 'white' ? 'user' : 'engine'; 
     
     useEffect(() => {
@@ -31,6 +32,8 @@ const Opening = ({ route, navigation }) => {
             console.log("We're inside the axios post call")
             console.log(result.data.fen);
             updateFen(result.data.fen);
+            updateGameID(result.data.game_id);
+            console.log(result.data.game_id);
             // store game id in a var to use in patch request
         })
         .catch((err) => {
@@ -40,16 +43,15 @@ const Opening = ({ route, navigation }) => {
 
     const getEngineMove = (fen) => {
         console.log("Were in get Engine move function")
-        updateFen(fen);
         console.log(fen);
-        axios.patch(`${API}/games/2`, {"fen": currentFen})
+        axios.patch(`${API}/games/${gameID}`, {"fen": fen})
         .then((result) => {
             console.log("We're inside the axios patch call")
             console.log(result.data.fen);
             updateFen(result.data.fen)
         })
         .catch((err) => {
-        console.log(err); 
+            console.log(err); 
         })
     };
     
@@ -57,7 +59,7 @@ const Opening = ({ route, navigation }) => {
             <Chessboard
                 colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
                 fen={ currentFen } 
-                onMove={()=> getEngineMove(this.fen)}
+                onMove={({state}) => {getEngineMove(state.fen)}}
             />
         )
     );
