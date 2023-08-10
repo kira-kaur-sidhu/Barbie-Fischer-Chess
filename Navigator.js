@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Game from './components/Game';
 import Practice from './components/Practice';
 import Opening from './components/Opening';
+import LoadGame from './components/LoadGame';
 
 const Stack = createNativeStackNavigator()
 
@@ -36,6 +37,11 @@ const Navigator = (props) => {
                 name="Opening"
                 component={Opening}
                 options={{title: "Opening"}}
+            />
+            <Stack.Screen
+                name="Load Game"
+                component={LoadGame}
+                options={{title: "Load Game"}}
             />
         </Stack.Navigator>
     )

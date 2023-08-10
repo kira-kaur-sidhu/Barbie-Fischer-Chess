@@ -56,7 +56,7 @@ const Practice = ({ navigation }) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button.Group space={2}>
-                            <Button variant={"outline"} onPress={() => {setShowModal(false);}}>GO BACK</Button>
+                            <Button variant="unstyled" onPress={() => {setShowModal(false);}}>GO BACK</Button>
                             <Button onPress={() => {pickOpening("Queen's Gambit")}}>CHOOSE</Button>
                         </Button.Group>
                     </Modal.Footer>
@@ -73,7 +73,7 @@ const Practice = ({ navigation }) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button.Group space={2}>
-                            <Button variant={"outline"} onPress={() => {setShowModal(false);}}>GO BACK</Button>
+                            <Button variant="unstyled" onPress={() => {setShowModal(false);}}>GO BACK</Button>
                             <Button onPress={() => {pickOpening("Fried Liver")}}>CHOOSE</Button>
                         </Button.Group>
                     </Modal.Footer>
@@ -90,7 +90,7 @@ const Practice = ({ navigation }) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button.Group space={2}>
-                            <Button variant={"outline"} onPress={() => {setShowModal(false);}}>GO BACK</Button>
+                            <Button variant="unstyled" onPress={() => {setShowModal(false);}}>GO BACK</Button>
                             <Button onPress={() => {pickOpening("Ruy Lopez")}}>CHOOSE</Button>
                         </Button.Group>
                     </Modal.Footer>

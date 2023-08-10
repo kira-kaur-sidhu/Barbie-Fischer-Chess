@@ -24,16 +24,17 @@ const Opening = ({ route, navigation }) => {
     const API = 'https://barbie-fischer-chess.onrender.com'
     const [currentFen, updateFen] = useState(initialFen); 
     const [gameID, updateGameID] = useState();
+    const [moveList, updateMoveList] = useState();
     const whitePlayer = route.color === 'white' ? 'user' : 'engine'; 
     
     useEffect(() => {
         axios.post(`${API}/games`, {"white": "engine", "opening": "Queen's Gambit" }) // this would return fen string from either opening or engine
         .then((result) => {
             console.log("We're inside the axios post call")
-            console.log(result.data.fen);
+            console.log(result.data.game_id);
             updateFen(result.data.fen);
             updateGameID(result.data.game_id);
-            console.log(result.data.game_id);
+            updateMoveList(result.data.user_move_list);
             // store game id in a var to use in patch request
         })
         .catch((err) => {
@@ -41,15 +42,20 @@ const Opening = ({ route, navigation }) => {
         })
     }, []);
 
-    const getEngineMove = (fen) => {
+    const getEngineMove = (state) => {
         console.log("Were in get Engine move function")
-        // console.log(fen);
-        axios.patch(`${API}/games/${gameID}`, {"fen": fen})
+        console.log(state.history[0])
+        // history() always returns a list, even if it has one element
+        // state.history only returns the last move we just played
+        // so it looks like ["d4"]
+        let newMoveList = moveList;
+        if (newMoveList) {newMoveList.push(state.history[0]);};
+        axios.patch(`${API}/games/${gameID}`, {"fen": state.fen})
         .then((result) => {
             console.log("We're inside the axios patch call")
-            console.log(result.data);
+            console.log(moveList)
             updateFen(result.data.game.fen);
-
+            updateMoveList(newMoveList);
             // const newFen = fen
         })
         .catch((err) => {
