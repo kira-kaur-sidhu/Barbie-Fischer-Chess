@@ -20,6 +20,7 @@ class ChessGame:
     def opening_moves(board, current_opening, engine_list, move_list, engine_color):
         move_index = len(engine_list) + 1 
         result = None 
+        variation_name = ""
 
         for line in current_opening["variations"]: 
             if not move_list: 
@@ -32,6 +33,7 @@ class ChessGame:
                         try:
                             result = line[move_index][0]
                             board.push_san(result)
+                            variation_name=line[0]
                             break
                         except chess.IllegalMoveError:
                             continue
@@ -42,12 +44,12 @@ class ChessGame:
 
         if not result: 
             engine = ourEngine(board, engine_color)
-            result = engine.search(board, 3, engine_color)
-            board.push(result)
+            result = board.san(engine.search(board, 3, engine_color))
+            board.push_san(result)
 
         new_engine_list = engine_list[:]
         new_engine_list.append(result)
-        return board.fen(), new_engine_list
+        return [board.fen(), new_engine_list, variation_name]
     
     def check_game_status(board):
         if board.is_checkmate():

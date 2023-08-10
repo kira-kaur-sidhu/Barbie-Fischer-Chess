@@ -85,10 +85,11 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
                 continue 
 
     if not result: 
-        result = engine.search(board, 3, "white")
-        board.push(result)
+        result = board.san(engine.search(board, 3, "white"))
+        board.push_san(result)
 
     engine_list.append(result)
+    print(engine_list)
     display.update(board.fen(), game_board)
     sleep(1)
 

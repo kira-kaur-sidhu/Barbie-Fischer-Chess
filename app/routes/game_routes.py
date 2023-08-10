@@ -23,6 +23,7 @@ def start_game():
     request_body = request.get_json()
     new_board = chess.Board()
     request_body["engine_move_list"] = []
+    request_body["user_move_list"] = []
 
     if request_body["white"] == "engine":
         new_game = ChessGame
@@ -50,6 +51,7 @@ def get_user_engine_move(game_id):
     request_body = request.get_json()
 
     game.fen = request_body["fen"]
+    game.user_move_list = request_body["user_move_list"]
     new_board = chess.Board(game.fen)
     new_game = ChessGame
 
@@ -69,6 +71,7 @@ def get_user_engine_move(game_id):
         data = new_game.opening_moves(new_board, current_opening, game.engine_move_list, game.user_move_list, engine_color)
         game.fen = data[0]
         game.engine_move_list = data[1]
+        game.opening_variation = data[2]
         updated_board = chess.Board(game.fen)
         current_status = new_game.check_game_status(updated_board)
         if current_status:
