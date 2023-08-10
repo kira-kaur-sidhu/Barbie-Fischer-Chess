@@ -47,9 +47,9 @@ const Opening = ({ route, navigation }) => {
         axios.patch(`${API}/games/${gameID}`, {"fen": fen})
         .then((result) => {
             console.log("We're inside the axios patch call")
-            
             console.log(result.data);
             updateFen(result.data.game.fen);
+
             // const newFen = fen
         })
         .catch((err) => {
@@ -61,7 +61,8 @@ const Opening = ({ route, navigation }) => {
             <Chessboard
                 colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
                 fen={ currentFen } 
-                onMove={({ state }) => {getEngineMove(state.fen)}}
+                onMove={({ state }) => {getEngineMove(state)
+                console.log(state)}}
             />
         )
     );
