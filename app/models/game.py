@@ -2,7 +2,7 @@ from app import db
 
 class Game(db.Model): 
     game_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    opening = db.Column(db.String)
+    opening = db.Column(db.String, nullable=True)
     opening_variation = db.Column(db.String, default="")
     fen = db.Column(db.String)
     game_status = db.Column(db.String, default="In Progress")

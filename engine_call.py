@@ -51,6 +51,14 @@ class ChessGame:
         new_engine_list.append(result)
         return [board.fen(), new_engine_list, variation_name]
     
+    def call_engine_only(board, engine_list, engine_color): 
+        engine = ourEngine(board, engine_color)
+        result = board.san(engine.search(board, 3, engine_color))
+        board.push_san(result)
+        new_engine_list = engine_list[:]
+        new_engine_list.append(result)
+        return board.fen(), new_engine_list
+    
     def check_game_status(board):
         if board.is_checkmate():
             return "Checkmate"

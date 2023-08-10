@@ -49,7 +49,8 @@ from openings import opening_table
 # print(new_board.fen())
 
 
-board = chess.Board()
 
-move = chess.Move.from_uci("a2a4")
-print(board.san(move))
+# board = chess.Board()
+
+# move = chess.Move.from_uci("a2a4")
+# print(board.san(move))

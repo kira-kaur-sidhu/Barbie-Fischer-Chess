@@ -16,8 +16,8 @@ def validate_item(model, item_id):
         return abort(make_response({"details": "invalid board"}, 400))
     
     return model.query.get_or_404(item_id)
-
-# POST Route to start game
+    
+# POST Route to start game with opening 
 @game_bp.route("", methods=["POST"])
 def start_game():
     request_body = request.get_json()
@@ -80,6 +80,49 @@ def get_user_engine_move(game_id):
     db.session.commit()
 
     return {"game": game.to_dict()}, 200
+
+#POST route to start game without opening 
+@game_bp.route("/no_opening", methods=["POST"])
+def start_game_without_opening(): 
+    request_body = request.get_json()
+    new_board = chess.Board()
+    new_game = ChessGame
+    data = new_game.call_engine_only(new_board,[],"white")
+    request_body["engine_move_list"] = data[1]
+    request_body["fen"] = new_board.fen()
+    game = Game(fen=request_body["fen"],
+                engine_move_list=request_body["engine_move_list"])
+    db.session.add(game)
+    db.session.commit()
+
+    return jsonify(game.to_dict()),200
+
+#PATCH route to continue game without opening 
+@game_bp.route("no_opening/<game_id>", methods=["PATCH"])
+def continue_game(game_id): 
+    game = validate_item(Game, game_id)
+
+    request_body = request.get_json()
+
+    game.fen = request_body["fen"]
+    game.user_move_list = request_body["user_move_list"]
+    new_board = chess.Board(game.fen)
+    new_game = ChessGame
+    current_status = new_game.check_game_status(new_board)
+    if current_status:
+        game.game_status = current_status
+    else:
+        if game.white == "engine":
+            engine_color = "white"
+        else:
+            engine_color = "black"
+        data = new_game.call_engine_only(new_board, game.engine_move_list, engine_color)
+        game.fen = data[0]
+        game.engine_move_list = data[1]
+
+    db.session.commit()
+    return jsonify(game.to_dict()),200
+
 
 @game_bp.route("", methods=["GET"])
 def get_games():
