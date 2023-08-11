@@ -57,39 +57,54 @@ def user_moves(board, game_board, move_list):
     sleep(1)
     return
 
-def engine_moves(board, game_board, engine_list, engine):
-    engine = ourEngine(board, "white")
-    engine.evaluation("white")
-
-def opening_moves(board, game_board, engine_list, current_opening, move_list, engine):
-    move_index = len(engine_list) + 1 
+def opening_moves(board, game_board, current_opening, white_list, black_list, engine, engine_color):
+    move_index = len(black_list) + 1 
     result = None 
+    variation_name = ""
+    
+    moves_list = []
+    for i in range(len(white_list)):
+        try:
+            moves_list.append([white_list[i], black_list[i]])
+        except IndexError:
+            break
 
     for line in current_opening["variations"]: 
-        if not move_list: 
-            result = line[move_index][0]
+        if not moves_list: 
+            if engine_color == "white":
+                result = line[move_index][0]
+            else:
+                try:
+                    result = line[move_index][1]
+                except IndexError:
+                    break
             board.push_san(result)
+            variation_name=line[0]
             break
-        elif len(move_list) > 0: 
-            try:
-                if line[move_index-1][1] == move_list[-1] and engine_list[-1] == line[move_index-1][0]:
-                    try:
-                        result = line[move_index][0]
-                        board.push_san(result)
-                        break
-                    except chess.IllegalMoveError:
-                        continue
-                else: 
-                    continue
-            except IndexError:
-                continue 
+        else:
+            if moves_list == line[1:move_index]:
+                if engine_color == "white":
+                    result = line[move_index][0]
+                else:
+                    result = line[move_index][1]
+                board.push_san(result)
+                variation_name=line[0]
+                break
+
+            else: 
+                continue
 
     if not result: 
-        result = board.san(engine.search(board, 5, "white"))
+        result = board.san(engine.search(board, 5, engine_color))
         board.push_san(result)
+    
+    if engine_color == "white":
+        engine_list = white_list
+    else:
+        engine_list = black_list
 
     engine_list.append(result)
-    print(engine_list)
+    print(moves_list)
     display.update(board.fen(), game_board)
     sleep(1)
 
@@ -97,6 +112,10 @@ def opening_moves(board, game_board, engine_list, current_opening, move_list, en
 
 def play_chess_game():
     user_color = input("Do you want to play as white or black? ")
+    if user_color == "white":
+        engine_color = "black"
+    else:
+        engine_color = "white"
     engine_opening = input("What opening do you want to play against? ")
 
     for item in opening_table:
@@ -104,7 +123,7 @@ def play_chess_game():
             current_opening = item
 
     board = chess.Board()
-    engine = ourEngine(board, "white", 3)
+    engine = ourEngine(board, engine_color, 3)
     move_list = []
     engine_list = []
 
@@ -119,7 +138,7 @@ def play_chess_game():
             elif board.is_check():
                 print("Check")
 
-            engine_moves(board, game_board, engine_list, engine)
+            opening_moves(board, game_board, current_opening, move_list, engine_list, engine, engine_color)
             if check_if_game_ends(board):
                 winner = "black"
                 break
@@ -127,7 +146,7 @@ def play_chess_game():
                 print("Check")
         
         if user_color == "black":
-            opening_moves(board, game_board, engine_list, current_opening, move_list, engine)
+            opening_moves(board, game_board, current_opening, engine_list, move_list, engine, engine_color)
             if check_if_game_ends(board):
                 winner = "white"
                 break
@@ -141,6 +160,7 @@ def play_chess_game():
             elif board.is_check():
                 print("Check")
 
+    print(f"{winner} wins!")
     engine.quit()
     display.terminate()
     # print(f"Game Over, Winner is {winner}") <--- fix this

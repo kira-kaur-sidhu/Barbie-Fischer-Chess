@@ -59,19 +59,20 @@ def get_user_engine_move(game_id):
     if current_status:
         game.game_status = current_status
     else:
-        if game.white == "engine":
-            engine_color = "white"
-        else:
-            engine_color = "black"
-        
         for item in opening_table:
             if game.opening == item["name"]:
                 current_opening = item
 
-        data = new_game.opening_moves(new_board, current_opening, game.engine_move_list, game.user_move_list, engine_color)
+        if game.white == "engine":
+            engine_color = "white"
+            data = new_game.opening_moves(new_board, current_opening, game.engine_move_list, game.user_move_list, engine_color)
+        else:
+            engine_color = "black"
+            data = new_game.opening_moves(new_board, current_opening, game.user_move_list, game.engine_move_list, engine_color)
+
         game.fen = data[0]
         game.engine_move_list = data[1]
-        game.opening_variation = data[2]
+        game.opening_variation = data[2][0]
         updated_board = chess.Board(game.fen)
         current_status = new_game.check_game_status(updated_board)
         if current_status:

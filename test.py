@@ -44,16 +44,7 @@ from openings import opening_table
 # game_board = display.start(board.fen())
 # sleep(10)
 
-# new_board = chess.Board("rnbqkbnr/ppp1pppp/8/8/2pP4/5N2/PP2PPPP/RNBQKB1R b KQkq - 1 3")
-# new_board.push_san("e6")
-# print(new_board.fen())
-
-
-
-# board = chess.Board()
-
-# move = chess.Move.from_uci("a2a4")
-# print(board.san(move))
-
-for square in chess.SQUARES:
-    print(square)
+new_board = chess.Board()
+print(new_board.fen())
+new_board.push_san("e4")
+print(new_board.fen())

@@ -17,35 +17,51 @@ from openings import opening_table
 from our_engine import ourEngine
 
 class ChessGame:
-    def opening_moves(board, current_opening, engine_list, move_list, engine_color):
-        move_index = len(engine_list) + 1 
+    def opening_moves(board, current_opening, white_list, black_list, engine_color):
+        move_index = len(white_list) + 1 
         result = None 
         variation_name = ""
+        
+        moves_list = []
+        for i in range(len(white_list)):
+            try:
+                moves_list.append([white_list[i], black_list[i]])
+            except IndexError:
+                break
 
         for line in current_opening["variations"]: 
-            if not move_list: 
-                result = line[move_index][0]
+            if not moves_list: 
+                if engine_color == "white":
+                    result = line[move_index][0]
+                else:
+                    try:
+                        result = line[move_index][1]
+                    except IndexError:
+                        break
                 board.push_san(result)
+                variation_name=line[0]
                 break
-            elif len(move_list) > 0: 
-                try:
-                    if line[move_index-1][1] == move_list[-1] and engine_list[-1] == line[move_index-1][0]:
-                        try:
-                            result = line[move_index][0]
-                            board.push_san(result)
-                            variation_name=line[0]
-                            break
-                        except chess.IllegalMoveError:
-                            continue
-                    else: 
-                        continue
-                except IndexError:
-                    continue 
+            else:
+                if moves_list == line[1:move_index]:
+                    if engine_color == "white":
+                        result = line[move_index][0]
+                    else:
+                        result = line[move_index][1]
+                    board.push_san(result)
+                    variation_name=line[0]
+                    break
 
+                else: 
+                    continue
         if not result: 
             engine = ourEngine(board, engine_color)
             result = board.san(engine.search(board, 5, engine_color))
             board.push_san(result)
+        
+        if engine_color == "white":
+            engine_list = white_list
+        else:
+            engine_list = black_list
 
         new_engine_list = engine_list[:]
         new_engine_list.append(result)
