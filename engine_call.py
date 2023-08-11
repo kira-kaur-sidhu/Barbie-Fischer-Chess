@@ -44,7 +44,7 @@ class ChessGame:
 
         if not result: 
             engine = ourEngine(board, engine_color)
-            result = board.san(engine.search(board, 3, engine_color))
+            result = board.san(engine.search(board, 5, engine_color))
             board.push_san(result)
 
         new_engine_list = engine_list[:]
@@ -53,7 +53,7 @@ class ChessGame:
     
     def call_engine_only(board, engine_list, engine_color): 
         engine = ourEngine(board, engine_color)
-        result = board.san(engine.search(board, 3, engine_color))
+        result = board.san(engine.search(board, 5, engine_color))
         board.push_san(result)
         new_engine_list = engine_list[:]
         new_engine_list.append(result)

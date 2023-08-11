@@ -24,24 +24,114 @@ class ourEngine:
 
     def evaluate(self, board):
         piece_values = {
-            "P": 1,
-            "p": -1,
-            "R": 5,
-            "r": -5,
-            "B": 3,
-            "b": -3,
-            "N": 3,
-            "n": -3,
-            "Q": 9,
-            "q": -9,
-            "K": 100,
-            "k": -100,
+            "P": 100,
+            "p": -100,
+            "R": 500,
+            "r": -500,
+            "B": 300,
+            "b": -300,
+            "N": 300,
+            "n": -300,
+            "Q": 900,
+            "q": -900,
+            "K": 10000,
+            "k": -10000,
         }
+
+        pawn_table_white = [    
+            0,  0,  0,  0,  0,  0,  0,  0,
+            5, 10, 10, -20, -20, 10, 10,  5,
+            5, -5, -10,  0,  0, -10, -5,  5,
+            0,  0,  0, 20, 20,  0,  0,  0,
+            5,  5, 10, 25, 25, 10,  5,  5,
+            10, 10, 20, 30, 30, 20, 10, 10,
+            50, 50, 50, 50, 50, 50, 50, 50,
+            0, 0, 0, 0, 0, 0, 0, 0
+        ]
+        pawn_table_black = list(reversed(pawn_table_white))
+
+
+        rook_table_white = [
+            0, 0, 0, 5, 5, 0, 0, 0,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            5, 10, 10, 10, 10, 10, 10, 5,
+            0, 0, 0, 0, 0, 0, 0, 0
+        ]
+        rook_table_black = list(reversed(rook_table_white))
+
+        bishop_table_white = [
+            -20, -10, -10, -10, -10, -10, -10, -20,
+            -10, 5, 0, 0, 0, 0, 5, -10,
+            -10, 10, 10, 10, 10, 10, 10, -10,
+            -10, 0, 10, 10, 10, 10, 0, -10,
+            -10, 5, 5, 10, 10, 5, 5, -10,
+            -10, 0, 5, 10, 10, 5, 0, -10,
+            -10, 0, 0, 0, 0, 0, 0, -10,
+            -20, -10, -10, -10, -10, -10, -10, -20
+        ]
+        bishop_table_black = list(reversed(bishop_table_white))
+
+        knight_table_white = [
+            -50, -40, -30, -30, -30, -30, -40, -50,
+            -40, -20, 0, 0, 0, 0, -20, -40,
+            -30, 0, 10, 15, 15, 10, 0, -30,
+            -30, 5, 15, 20, 20, 15, 5, -30,
+            -30, 0, 15, 20, 20, 15, 0, -30,
+            -30, 5, 10, 15, 15, 10, 5, -30,
+            -40, -20, 0, 5, 5, 0, -20, -40,
+            -50, -40, -30, -30, -30, -30, -40, -50
+        ]
+        knight_table_black = list(reversed(knight_table_white))
+
+        queen_table_white = [
+            -20, -10, -10, -5, -5, -10, -10, -20,
+            -10, 0, 0, 0, 0, 0, 0, -10,
+            -10, 0, 5, 5, 5, 5, 0, -10,
+            -5, 0, 5, 5, 5, 5, 0, -5,
+            0, 0, 5, 5, 5, 5, 0, -5,
+            -10, 5, 5, 5, 5, 5, 0, -10,
+            -10, 0, 5, 0, 0, 0, 0, -10,
+            -20, -10, -10, -5, -5, -10, -10, -20
+        ]
+        queen_table_black = list(reversed(queen_table_white))
+
+        king_table_white = [
+            20, 30, 10, 0, 0, 10, 30, 20,
+            20, 20, 0, 0, 0, 0, 20, 20,
+            -10, -20, -20, -20, -20, -20, -20, -10,
+            20, -30, -30, -40, -40, -30, -30, -20,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30
+        ]
+        king_table_black = list(reversed(king_table_white))
+
+        piece_to_table = {
+            "P": pawn_table_white,
+            "p": pawn_table_black,
+            "R": rook_table_white,
+            "r": rook_table_black,
+            "B": bishop_table_white,
+            "b": bishop_table_black,
+            "N": knight_table_white,
+            "n": knight_table_black,
+            "Q": queen_table_white,
+            "q": queen_table_black,
+            "K": king_table_white,
+            "k": king_table_black,
+        }
+
         score = 0
         for square in chess.SQUARES:
             piece = board.piece_at(square)
             if piece:
                 score += piece_values[str(piece)]
+                score += piece_to_table[str(piece)][square]
 
         return score
     

@@ -54,3 +54,6 @@ from openings import opening_table
 
 # move = chess.Move.from_uci("a2a4")
 # print(board.san(move))
+
+for square in chess.SQUARES:
+    print(square)
