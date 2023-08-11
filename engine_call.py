@@ -34,10 +34,7 @@ class ChessGame:
                 if engine_color == "white":
                     result = line[move_index][0]
                 else:
-                    try:
-                        result = line[move_index][1]
-                    except IndexError:
-                        break
+                    result = line[move_index][1]
                 board.push_san(result)
                 variation_name=line[0]
                 break
@@ -46,7 +43,10 @@ class ChessGame:
                     if engine_color == "white":
                         result = line[move_index][0]
                     else:
-                        result = line[move_index][1]
+                        try:
+                            result = line[move_index][1]
+                        except IndexError:
+                            break
                     board.push_san(result)
                     variation_name=line[0]
                     break
