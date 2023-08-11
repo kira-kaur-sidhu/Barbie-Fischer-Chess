@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useWindowDimensions } from 'react-native';
 import Chessboard from 'react-native-chessboard';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,13 +12,14 @@ import {GestureHandlerRootView, NativeViewGestureHandler, gestureHandlerRootHOC}
 
 
 const Home = ( { navigation }) => {
+    const {height, width} = useWindowDimensions();
     const [showModal, setShowModal] = useState(false);
 
     return (
         <GestureHandlerRootView>
             <Center>
                 <Box marginTop={10}>
-                    <Chessboard/>
+                    <Chessboard boardSize={Math.floor(width / 10) * 10}/>
                 </Box>
                 <Button marginTop={3} onPress={() => navigation.navigate('Game')}>NEW GAME</Button>
                 <Button onPress={() => navigation.navigate('Practice')}>PRACTICE</Button>

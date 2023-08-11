@@ -26,9 +26,12 @@ const Opening = ({ route, navigation }) => {
     const [gameID, updateGameID] = useState();
     const [moveList, updateMoveList] = useState();
     const whitePlayer = route.color === 'white' ? 'user' : 'engine'; 
+    const opening = route.opening;
     
     useEffect(() => {
-        axios.post(`${API}/games`, {"white": "engine", "opening": "Queen's Gambit" }) // this would return fen string from either opening or engine
+        console.log(whitePlayer);
+        console.log(opening);
+        axios.post(`${API}/games`, {"white": whitePlayer, "opening": opening,}) // this would return fen string from either opening or engine
         .then((result) => {
             console.log("We're inside the axios post call")
             console.log(result.data.game_id);
@@ -50,12 +53,12 @@ const Opening = ({ route, navigation }) => {
         // so it looks like ["d4"]
         let newMoveList = moveList;
         if (newMoveList) {newMoveList.push(state.history[0]);};
-        axios.patch(`${API}/games/${gameID}`, {"fen": state.fen})
+        updateMoveList(newMoveList);
+        axios.patch(`${API}/games/${gameID}`, {"fen": state.fen, "user_move_list":  moveList})
         .then((result) => {
             console.log("We're inside the axios patch call")
             console.log(moveList)
             updateFen(result.data.game.fen);
-            updateMoveList(newMoveList);
             // const newFen = fen
         })
         .catch((err) => {
