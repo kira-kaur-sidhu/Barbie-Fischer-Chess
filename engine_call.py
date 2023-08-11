@@ -18,7 +18,7 @@ from our_engine import ourEngine
 
 class ChessGame:
     def opening_moves(board, current_opening, white_list, black_list, engine_color):
-        move_index = len(white_list) + 1 
+        move_index = len(black_list) + 1 
         result = None 
         variation_name = ""
         
