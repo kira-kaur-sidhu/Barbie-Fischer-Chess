@@ -90,9 +90,11 @@ def start_game_without_opening():
     new_game = ChessGame
     data = new_game.call_engine_only(new_board,[],"white")
     request_body["engine_move_list"] = data[1]
+    request_body["opening"] = ""
+    request_body["user_move_list"] = []
     request_body["fen"] = new_board.fen()
-    game = Game(fen=request_body["fen"],
-                engine_move_list=request_body["engine_move_list"])
+
+    game = Game.from_dict(request_body)
     db.session.add(game)
     db.session.commit()
 
