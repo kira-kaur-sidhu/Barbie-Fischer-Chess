@@ -10,6 +10,14 @@ import { Button, useTheme, Modal, Center, Box, Text } from "native-base";
 import 'react-native-gesture-handler';
 import {GestureHandlerRootView, NativeViewGestureHandler, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
+/* TO DOs:
+1. change styling to match Figma and be consistent
+2. fix button spacing !!! !! !
+3. replace chessboard with image or something bc i'm tired
+4. fill in about app modal
+
+NICE TO HAVEs:
+1. some sort of settings menu to change color scheme */
 
 const Home = ( { navigation }) => {
     const {height, width} = useWindowDimensions();

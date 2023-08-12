@@ -7,11 +7,21 @@ import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gestur
 import Chessboard from 'react-native-chessboard';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Center, Box, Button, Flex } from 'native-base';
+import { Center, Box, Button, Flex, Heading } from 'native-base';
 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
+/* Things left to do:
+1. finish styling (low importance)
+2. add resign button aka delete in-progress game button
+-- 2a. take user back Home 
+3. add API PATCH call to confirmMove function
+4. add API POST to a useEffect
+5. add option to play as black
+6. figure out how to display captured pieces
 
+Nice to have:
+1. popup for check, checkmate, winning, losing, etc. */
 
 const Game = () => {
     const {height, width} = useWindowDimensions();
@@ -49,11 +59,15 @@ const Game = () => {
     return (
         <GestureHandlerRootView>
             <Center>
-                <Flex direction="column" align="center" justify="space-evenly" h="100%" safeArea>
+                <Flex direction="column" align="center" justify="space-between" h="100%" w="100%" safeAreaBottom>
+                    <Box w="100%">
+                    <Box bg={"#F3BAD5"} h={Math.floor(width / 8) * 1.5} w="100%" _text={{fontSize: 'md', fontWeight: 'bold'}}>Barbie</Box>
                     <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
                     <ChessBoardRender/>
                     </Box>
-                    <Button.Group space={4}>
+                    <Box bg={"#F3BAD5"} paddingTop={Math.floor(width / 8) * 1} w="100%" _text={{textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>Player</Box>
+                    </Box>
+                    <Button.Group space={4} paddingBottom={10}>
                         <Button onPress={undoMove}>Undo</Button>
                         <Button onPress={confirmMove}>Confirm</Button>
                     </Button.Group>
