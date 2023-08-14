@@ -55,7 +55,7 @@ class ChessGame:
                     continue
         if not result: 
             engine = ourEngine(board, engine_color)
-            result = board.san(engine.search(board, 5, engine_color))
+            result = board.san(engine.search(board, engine_color, 5))
             board.push_san(result)
         
         if engine_color == "white":
@@ -69,7 +69,9 @@ class ChessGame:
     
     def call_engine_only(board, engine_list, engine_color): 
         engine = ourEngine(board, engine_color)
-        result = board.san(engine.search(board, 5, engine_color))
+        if len(engine_list) >= 12: 
+            depth = 5 
+        result = board.san(engine.search(board, engine_color, depth=3))
         board.push_san(result)
         new_engine_list = engine_list[:]
         new_engine_list.append(result)

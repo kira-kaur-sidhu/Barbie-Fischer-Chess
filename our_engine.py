@@ -135,7 +135,7 @@ class ourEngine:
 
         return score
     
-    def search(self, board, depth, engine_color, alpha=float("-inf"), beta=float("inf")):
+    def search(self, board, engine_color, depth, alpha=float("-inf"), beta=float("inf")):
         ## deepcopy of board
         # if depth == 0 or game ends(checkmate, stalemate, etc...)
             # RETURN call evaluation function (white or black, whatever engine is)
@@ -162,7 +162,7 @@ class ourEngine:
                 board_copy = deepcopy(board)
                 board_copy.push(move)
                 if depth > 1: 
-                    temp_result = self.search(board_copy, depth-1, "black", alpha, beta)
+                    temp_result = self.search(board_copy, "black", depth-1, alpha, beta)
                     board_copy.push(temp_result)
                 
                 eval = self.evaluate(board_copy)
@@ -183,7 +183,7 @@ class ourEngine:
                 board_copy = deepcopy(board)
                 board_copy.push(move)
                 if depth > 1: 
-                    temp_result = self.search(board_copy, depth-1, "white", alpha, beta)
+                    temp_result = self.search(board_copy, "white", depth-1, alpha, beta)
                     board_copy.push(temp_result)
                 
                 eval = self.evaluate(board_copy)
