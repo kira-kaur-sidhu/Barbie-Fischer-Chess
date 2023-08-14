@@ -92,7 +92,7 @@ def start_game_without_opening():
     request_body["engine_move_list"] = data[1]
     request_body["fen"] = new_board.fen()
     game = Game(fen=request_body["fen"],
-                engine_move_list=request_body["engine_move_list"])
+    engine_move_list=request_body["engine_move_list"])
     db.session.add(game)
     db.session.commit()
 
