@@ -21,6 +21,7 @@ const Home = ( { navigation }) => {
                 </Box>
                 <Button marginTop={3} onPress={() => navigation.navigate('Game')}>NEW GAME</Button>
                 <Button onPress={() => navigation.navigate('Practice')}>PRACTICE</Button>
+                <Button onPress={() => navigation.navigate('Puzzle')}>Puzzle Game</Button>
                 <Button onPress={() => navigation.navigate('Load Game')}>LOAD GAME</Button>
                 <Button variant={'ghost'} onPress={() => setShowModal(true)}>ABOUT APP</Button>
                 <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
