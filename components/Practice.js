@@ -38,7 +38,7 @@ const Practice = ({ navigation }) => {
             setShowModal2(false);
             setShowModal3(false);
             console.log(name)
-            console.log(openingChoice)
+            console.log(openingChoice);
     };
 
     return (
@@ -47,8 +47,8 @@ const Practice = ({ navigation }) => {
             <Box h="30%">
             <Heading>Choose a color:</Heading>
             <Flex direction="row" align="center" justify="space-evenly" h="70%">
-            <Button onPress={() => pickColor("White")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
-            <Button onPress={() => pickColor("Black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
+            <Button onPress={() => pickColor("white")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
+            <Button onPress={() => pickColor("black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
             </Flex>
             </Box>
             <Box h="50%">

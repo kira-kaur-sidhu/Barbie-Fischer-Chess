@@ -26,12 +26,14 @@ const Opening = ({ route, navigation }) => {
     const [currentFen, updateFen] = useState(initialFen); 
     const [gameID, updateGameID] = useState();
     const [moveList, updateMoveList] = useState();
-    const whitePlayer = route.color === 'white' ? 'user' : 'engine'; 
-    const opening = route.opening;
+    const whitePlayer = route.params.color === 'white' ? 'user' : 'engine'; 
+    const opening = route.params.opening;
     
     useEffect(() => {
         console.log(whitePlayer);
         console.log(opening);
+        console.log (route.params.opening);
+        console.log({"white": whitePlayer, "opening": route.params.opening});
         axios.post(`${API}/games`, {"white": whitePlayer, "opening": opening,}) // this would return fen string from either opening or engine
         .then((result) => {
             console.log("We're inside the axios post call")
