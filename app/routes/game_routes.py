@@ -88,19 +88,16 @@ def start_game_without_opening():
     request_body = request.get_json()
     new_board = chess.Board()
     new_game = ChessGame
+    request_body["user_move_list"] = []
     if request_body["white"] == "engine":
         engine_color = "white"
         data = new_game.call_engine_only(new_board,[], engine_color)
         request_body["engine_move_list"] = data[1]
         request_body["fen"] = new_board.fen()
-        request_body["user_move_list"] = []
     elif request_body["white"] == "player": 
         engine_color = "black"
-        new_board = chess.Board(request_body["fen"])
-        data = new_game.call_engine_only(new_board, [], engine_color)
-        request_body["engine_move_list"] = data[1]
         request_body["fen"] = new_board.fen()
-
+        request_body["engine_move_list"]=[]
     request_body["opening"] = ""
     game = Game.from_dict(request_body)
     db.session.add(game)
