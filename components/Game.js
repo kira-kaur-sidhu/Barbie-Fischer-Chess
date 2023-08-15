@@ -8,7 +8,7 @@ import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gestur
 import Chessboard from 'react-native-chessboard';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Center, Box, Button, Flex, Heading } from 'native-base';
+import { Center, Box, Button, Flex, Heading, AlertDialog } from 'native-base';
 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
@@ -31,6 +31,8 @@ const Game = ({route, navigation}) => {
     const [moveList, updateMoveList] = useState([]);
     const whitePlayer = route.params.white
     const [currentMove, setCurrentMove] = useState();
+    const [isOpen, setIsOpen] = React.useState(false);
+    const onClose = () => setIsOpen(false);
 
 
     useEffect(() => {
@@ -69,7 +71,21 @@ const Game = ({route, navigation}) => {
         updateFen(oldFen);
     };
 
-    
+    const deleteGame = () => {
+        console.log("We're inside the delete game function"); 
+        console.log(gameID)
+        axios.delete(`${API}/${gameID}`)
+        .then((result) => {
+            
+            console.log("We're inside the axios delete call"); 
+            console.log(result.data);
+        })
+        .catch((err) => {
+            console.log(err); 
+        })
+        navigation.navigate('Home');
+        
+    }
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
                 colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
@@ -97,7 +113,28 @@ const Game = ({route, navigation}) => {
                     <Button.Group space={4} paddingBottom={10}>
                         <Button onPress={undoMove}>Undo</Button>
                         <Button onPress={confirmMove}>Confirm</Button>
+                        <Button onPress={() => setIsOpen(!isOpen)}> Resign</Button>
                     </Button.Group>
+                    <AlertDialog isOpen={isOpen} onClose={onClose}>
+                    <AlertDialog.Content>
+                    <AlertDialog.CloseButton />
+                    <AlertDialog.Header>Delete Game</AlertDialog.Header>
+                    <AlertDialog.Body>
+                        This will remove all data relating to this game. This action cannot be
+                        reversed. Deleted data can not be recovered. {gameID}
+                    </AlertDialog.Body>
+                    <AlertDialog.Footer>
+                        <Button.Group space={2}>
+                        <Button variant="unstyled" colorScheme="coolGray" onPress={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme="danger" onPress={deleteGame}>
+                            Delete
+                        </Button>
+                        </Button.Group>
+                    </AlertDialog.Footer>
+                    </AlertDialog.Content>
+                </AlertDialog>
                 </Flex>
             </Center>
         </GestureHandlerRootView>
