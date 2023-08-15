@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, useTheme, Modal, Center, Box, Text } from "native-base";
+import { Button, useTheme, Modal, Center, Box, Text, Image } from "native-base";
 import 'react-native-gesture-handler';
 import {GestureHandlerRootView, NativeViewGestureHandler, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
@@ -22,6 +22,7 @@ NICE TO HAVEs:
 const Home = ( { navigation }) => {
     const {height, width} = useWindowDimensions();
     const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
 
     return (
         <GestureHandlerRootView>
@@ -29,7 +30,22 @@ const Home = ( { navigation }) => {
                 <Box marginTop={10}>
                     <Chessboard boardSize={Math.floor(width / 10) * 10}/>
                 </Box>
-                <Button marginTop={3} onPress={() => navigation.navigate('Game')}>NEW GAME</Button>
+                <Button marginTop={3} onPress={() => setShowModal2(true)}>NEW GAME</Button>
+                <Modal isOpen={showModal2} onClose={() => setShowModal2(false)}>
+                    <Modal.Content maxWidth="400px">
+                        <Modal.CloseButton />
+                        <Modal.Header>Play as:</Modal.Header>
+                        <Modal.Body>
+                            <Button.Group space={3}>
+                            <Button onPress={() => navigation.navigate('Game', {white: 'player'})}><Image size="xs" source={require('../assets/wp.png')} alt={"white"} /></Button>
+                            <Button onPress={() => navigation.navigate('Game', {white: 'engine'})}><Image size="xs" source={require('../assets/bp.png')} alt={"black"} /></Button>
+                            </Button.Group>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant='ghost' onPress={() => {setShowModal2(false);}}>GO BACK</Button>
+                        </Modal.Footer>
+                    </Modal.Content>
+                </Modal>
                 <Button onPress={() => navigation.navigate('Practice')}>PRACTICE</Button>
                 <Button onPress={() => navigation.navigate('Load Game')}>LOAD GAME</Button>
                 <Button variant={'ghost'} onPress={() => setShowModal(true)}>ABOUT APP</Button>

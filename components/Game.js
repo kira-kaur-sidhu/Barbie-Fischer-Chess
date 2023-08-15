@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import { useWindowDimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -15,43 +16,69 @@ const API = 'https://barbie-fischer-chess.onrender.com'
 1. finish styling (low importance)
 2. add resign button aka delete in-progress game button
 -- 2a. take user back Home 
-3. add API PATCH call to confirmMove function
-4. add API POST to a useEffect
-5. add option to play as black
 6. figure out how to display captured pieces
 
 Nice to have:
 1. popup for check, checkmate, winning, losing, etc. */
 
-const Game = () => {
+const Game = ({route, navigation}) => {
     const {height, width} = useWindowDimensions();
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    const API = 'https://barbie-fischer-chess.onrender.com/games'
     const [currentFen, updateFen] = useState(initialFen); 
+    const [oldFen, setOldFen] = useState();
+    const [gameID, updateGameID] = useState();
+    const [moveList, updateMoveList] = useState([]);
+    const whitePlayer = route.params.white
     const [currentMove, setCurrentMove] = useState();
-    let oldFen;
 
+
+    useEffect(() => {
+        console.log(whitePlayer)
+        axios.post(`${API}/no_opening`, {"white": whitePlayer})
+        .then((result) => {
+            console.log("We are inside the axios post call")
+            console.log(result.data.game_id);
+            updateGameID(result.data.game_id);
+            updateFen(result.data.fen);
+            setOldFen(result.data.fen);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, []);
 
 
     const confirmMove = () => {
-        const playMove = () => {
-
-        };
+        let newMoveList = moveList;
+        newMoveList.push(currentMove);
+        updateMoveList(newMoveList);
+        console.log({"fen": currentFen, "user_move_list": moveList});
+            axios.patch(`${API}/no_opening/${gameID}`, {"fen": currentFen, "user_move_list": moveList})
+            .then((result) => {
+                console.log("We're inside the patch call")
+                updateFen(result.data.fen);
+                setOldFen(result.data.fen)
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     };
 
     const undoMove = () => {
         updateFen(oldFen);
     };
 
-
-
     
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
                 colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
                 fen={ currentFen } 
-                onMove={({ state }) => { oldFen = currentFen;
+                onMove={({ state }) => {
                     updateFen(state.fen);
+                    setCurrentMove(state.history[0]);
                  } }
+                 boardOrientation="black"
             />
         )
     );
