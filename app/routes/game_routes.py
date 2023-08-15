@@ -122,14 +122,15 @@ def continue_game(game_id):
     current_status = new_game.check_game_status(new_board)
     if current_status:
         game.game_status = current_status
+
+    if game.white == "engine":
+        engine_color = "white"
     else:
-        if game.white == "engine":
-            engine_color = "white"
-        else:
-            engine_color = "black"
-        data = new_game.call_engine_only(new_board, game.engine_move_list, engine_color)
-        game.fen = data[0]
-        game.engine_move_list = data[1]
+        engine_color = "black"
+        
+    data = new_game.call_engine_only(new_board, game.engine_move_list, engine_color)
+    game.fen = data[0]
+    game.engine_move_list = data[1]
 
     db.session.commit()
     return jsonify(game.to_dict()),200

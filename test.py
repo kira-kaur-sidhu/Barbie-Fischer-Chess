@@ -19,7 +19,7 @@ from chessboard import display
 from time import sleep
 import time
 from openings import opening_table
-
+from engine_call import ChessGame
 
 # board=chess.Board()
 # queensgam = opening_table[0]["variations"][0]
@@ -44,16 +44,15 @@ from openings import opening_table
 # game_board = display.start(board.fen())
 # sleep(10)
 
+# new_board = chess.Board()
+# new_board.push_san("Nf3")
+# new_board.push_san("d5")
+
+# print(new_board.fen())
+
+new_game = ChessGame
 new_board = chess.Board()
-new_board.push_san("d4")
-new_board.push_san("d5")
-new_board.push_san("c4")
-new_board.push_san("dxc4")
-new_board.push_san("Nf3")
-new_board.push_san("Nf6")
-new_board.push_san("e3")
-new_board.push_san("e6")
-new_board.push_san("Bxc4")
-new_board.push_san("c5")
-new_board.push_san("0-0")
+new_board.push_san("a3")
+
 print(new_board.fen())
+#print(new_game.opening_moves(new_board, "Sicilian Defense", ["e4"], [], "black"))

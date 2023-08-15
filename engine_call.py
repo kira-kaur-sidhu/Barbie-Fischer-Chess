@@ -20,7 +20,7 @@ class ChessGame:
     def opening_moves(board, current_opening, white_list, black_list, engine_color):
         move_index = len(black_list) + 1 
         result = None 
-        variation_name = ""
+        variation_name = [""]
         
         moves_list = []
         for i in range(len(white_list)):
@@ -55,7 +55,7 @@ class ChessGame:
                     continue
         if not result: 
             engine = ourEngine(board, engine_color)
-            result = board.san(engine.search(board, engine_color, 5))
+            result = board.san(engine.search(board, engine_color, 3))
             board.push_san(result)
         
         if engine_color == "white":
