@@ -8,7 +8,7 @@ import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gestur
 import Chessboard from 'react-native-chessboard';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog } from 'native-base';
+import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog, Text } from 'native-base';
 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
@@ -125,10 +125,10 @@ const Game = ({route, navigation}) => {
                     <AlertDialog isOpen={isOpen} onClose={onClose}>
                     <AlertDialog.Content>
                     <AlertDialog.CloseButton />
-                    <AlertDialog.Header>Delete Game</AlertDialog.Header>
+                    <AlertDialog.Header><Heading>Delete Game {gameID}</Heading></AlertDialog.Header>
                     <AlertDialog.Body>
-                        This will remove all data relating to this game. This action cannot be
-                        reversed. Deleted data can not be recovered. {gameID}
+                        <Text fontSize={'md'}>This will remove all data relating to this game. This action cannot be
+                        reversed. Deleted data can not be recovered.</Text>
                     </AlertDialog.Body>
                     <AlertDialog.Footer>
                         <Button.Group space={2}>

@@ -22,24 +22,25 @@ const LoadGame = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const onClose = () => setIsOpen(false);
 
-    // useEffect(() => {
-    //   console.log('im inside useEffect');
-    //   axios.get(`${URL}`)
-    //   .then((result) => {
-    //     console.log('im inside the GET request')
-    //     const newGames = result.data.map((game) => {
-    //       return {
-    //         id: game.game_id,
-    //         fen: game.fen,
-    //         opening: game.opening
-    //       };
-    //     });
-    //     setSavedGames(newGames);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   })
-    // }, []);
+    // getting [AxiosError: Network Error]
+    useEffect(() => {
+      console.log('im inside useEffect');
+      axios.get(`${URL}`)
+      .then((result) => {
+        console.log('im inside the GET request')
+        const newGames = result.data.map((game) => {
+          return {
+            id: game.game_id,
+            fen: game.fen,
+            opening: game.opening
+          };
+        });
+        setSavedGames(newGames);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }, []);
 
     return (
       <Box safeArea>
