@@ -6,7 +6,8 @@ import Game from './components/Game';
 import Practice from './components/Practice';
 import Opening from './components/Opening';
 import LoadGame from './components/LoadGame';
-import Puzzle from './components/Puzzles'
+import Puzzle from './components/Puzzles';
+import PlayLoadGame from './components/PlayLoadGame';
 
 const Stack = createNativeStackNavigator()
 
@@ -46,6 +47,11 @@ const Navigator = (props) => {
                 name="Load Game"
                 component={LoadGame}
                 options={{title: "Load Game"}}
+            />
+            <Stack.Screen
+                name="PlayLoadGame"
+                component={PlayLoadGame}
+                options={{title: "Continue Game"}}
             />
             <Stack.Screen
                 name="Puzzle"

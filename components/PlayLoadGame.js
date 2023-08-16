@@ -6,53 +6,39 @@ import { StatusBar } from 'expo-status-bar';
 // import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard from 'react-native-chessboard';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog, Text } from 'native-base';
 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
-/* Things left to do:
-all completed !
 
-Nice to have:
-1. popup for check, checkmate, winning, losing, etc. 
-2. figure out how to display captured pieces */
-
-const Game = ({route, navigation}) => {
+const PlayLoadGame = ({route, navigation}) => {
+    // const whitePlayer = route.params.white;
+    // const blackPlayer = route.params.white === 'engine' ? 'player' : 'engine';
     const { colors } = useTheme();
     const black = colors['pink'][200]
     const white = colors['pink'][50]
     const {height, width} = useWindowDimensions();
-    const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
     const API = 'https://barbie-fischer-chess.onrender.com/games'
-    const [currentFen, updateFen] = useState(initialFen); 
+    const [currentFen, updateFen] = useState(); 
     const [oldFen, setOldFen] = useState();
-    const [gameID, updateGameID] = useState();
-    const [moveList, updateMoveList] = useState([]);
-    const whitePlayer = route.params.white;
-    const blackPlayer = route.params.white === 'engine' ? 'player' : 'engine';
+    const [gameID, updateGameID] = useState(route.params.id);
+    const [moveList, updateMoveList] = useState();
     const [currentMove, setCurrentMove] = useState();
     const [isOpen, setIsOpen] = React.useState(false);
     const onClose = () => setIsOpen(false);
-    const [captured, setCaptured] = useState({});
-
 
     useEffect(() => {
-        console.log(whitePlayer)
-        axios.post(`${API}/no_opening`, {"white": whitePlayer})
+        axios.get(`${API}/${gameID}`)
         .then((result) => {
-            console.log("We are inside the axios post call")
-            console.log(result.data.game_id);
-            updateGameID(result.data.game_id);
             updateFen(result.data.fen);
             setOldFen(result.data.fen);
+            updateMoveList(result.data.user_move_list);
         })
         .catch((err) => {
             console.log(err);
         })
     }, []);
-
 
     const confirmMove = () => {
         let newMoveList = moveList;
@@ -64,7 +50,6 @@ const Game = ({route, navigation}) => {
                 console.log("We're inside the patch call");
                 updateFen(result.data.fen);
                 setOldFen(result.data.fen);
-                capturedPieces(result.data.fen)
             })
             .catch((err) => {
                 console.log(err);
@@ -90,67 +75,6 @@ const Game = ({route, navigation}) => {
         navigation.navigate('Home');
         
     }
-
-    const capturedPieces = (fen) => {
-        const fenArray = fen.split(" ")
-
-        const initialPieces = {
-            p: 8,
-            b: 2,
-            n: 2,
-            r: 2,
-            q: 1,
-            k: 1,
-            P: 8,
-            B: 2,
-            N: 2,
-            R: 2,
-            Q: 1,
-            K: 1
-        };
-
-        const current = {
-            p: 0,
-            b: 0,
-            n: 0,
-            r: 0,
-            q: 0,
-            k: 0,
-            P: 0,
-            B: 0,
-            N: 0,
-            R: 0,
-            Q: 0,
-            K: 0
-        };
-
-        const captured = {
-            p: 0,
-            b: 0,
-            n: 0,
-            r: 0,
-            q: 0,
-            k: 0,
-            P: 0,
-            B: 0,
-            N: 0,
-            R: 0,
-            Q: 0,
-            K: 0
-        };
-
-        for (const letter of fenArray[0]) {
-            if (letter != '/') {
-                current[letter] += 1
-            }
-        };
-
-        for (const piece in initialPieces) {
-            captured[piece] = initialPieces[piece] - current[piece];
-        }
-        setCaptured(captured);
-    }
-
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
                 colors={ {black: black, white: white} }
@@ -168,12 +92,11 @@ const Game = ({route, navigation}) => {
             <Center>
                 <Flex direction="column" align="center" justify="space-between" h="95%" w="100%">
                     <Box w="100%">
-                        <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box>
-                        <Box></Box>
+                        {/* <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box> */}
                         <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
                             <ChessBoardRender/>
                         </Box>
-                        <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>{whitePlayer}</Box>
+                        {/* <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>{whitePlayer}</Box> */}
                     </Box>
                     <Button.Group space={4}>
                         <Button variant={'outline'} onPress={undoMove}>Undo</Button>
@@ -207,4 +130,4 @@ const Game = ({route, navigation}) => {
 }
 
 
-export default Game;
+export default PlayLoadGame;

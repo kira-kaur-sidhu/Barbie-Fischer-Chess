@@ -22,7 +22,7 @@ NICE TO HAVE:
 
 const Opening = ({ route, navigation }) => {
     const { colors } = useTheme();
-    const black = colors['pink'][300]
+    const black = colors['pink'][200]
     const white = colors['pink'][50]
     const {height, width} = useWindowDimensions();
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'

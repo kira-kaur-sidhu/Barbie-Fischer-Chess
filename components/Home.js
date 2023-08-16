@@ -19,12 +19,13 @@ NICE TO HAVEs:
 
 const Home = ( { navigation }) => {
     const { colors } = useTheme();
+    const black = colors['pink'][200]
+    const white = colors['pink'][50]
     const {height, width} = useWindowDimensions();
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const defaultWidth = Math.floor(width / 10) * 7
-    const black = colors['pink'][300]
-    const white = colors['pink'][50]
+    
 
     return (
         <GestureHandlerRootView>

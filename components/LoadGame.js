@@ -15,7 +15,7 @@ but if you do want to work on it:
 1. attach API DELETE call to delete button
 2. create button to resume game (???? idk how to do that tho ???) */
 
-const LoadGame = () => {
+const LoadGame = ({navigation}) => {
     const [savedGames, setSavedGames] = useState([]);
     const [gameID, setGameID] = useState();
     const API = 'https://barbie-fischer-chess.onrender.com/games'
@@ -31,12 +31,15 @@ const LoadGame = () => {
     const getAllGames = () => {
       axios.get(`${API}`)
       .then((result) => {
-        console.log('im inside the GET request')
+        console.log('im inside the GET request');
+        console.log(result.data);
         const newGames = result.data.map((game) => {
           return {
             id: game.game_id,
             fen: game.fen,
-            opening: game.opening
+            opening: game.opening, 
+            white: game.white,
+            userMoveList: game.user_move_list
           };
         }).reverse();
         setSavedGames(newGames);
@@ -79,9 +82,14 @@ const LoadGame = () => {
                       </Text>
                       </HStack>
                     <Spacer />
-                    <Button variant={'ghost'} colorScheme="danger" onPress={() => {setIsOpen(!isOpen); setGameID(item.id);}}>
+                    <Button.Group>
+                    <Button variant={'subtle'} colorScheme="success" onPress={() => {navigation.navigate('PlayLoadGame', {id: item.id})}}>
+                    <Image height="5" width="5" source={require('../assets/check.png')} alt={"checkmark"}></Image>
+                    </Button>
+                    <Button variant={'subtle'} colorScheme="danger" onPress={() => {setIsOpen(!isOpen); setGameID(item.id);}}>
                     <Image height="5" width="5" source={require('../assets/trash.png')} alt={"trash"}></Image>
                     </Button>
+                    </Button.Group>
                     </Flex>
                 </Box>} keyExtractor={item => item.id} />
                 <Center>

@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import {Gesture, GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard, { ChessboardRef } from 'react-native-chessboard';
-import { Button, Modal, Center, Box } from "native-base";
+import { Button, Modal, Center, Box, useTheme } from "native-base";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -26,10 +26,13 @@ const Puzzle = ({ route, navigation }) => {
     const [currentOpening, updateOpening] = useState("Queen's Gambit");
     const [currentVariation, updateVariation] = useState("Accepted");
     const [moveList, updateMoveList] = useState(opening_table["variations"][0]);
+    const { colors } = useTheme();
+    const black = colors['pink'][200]
+    const white = colors['pink'][50]
 
     const ChessBoardDemo = gestureHandlerRootHOC(() => (
         <Chessboard
-            colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
+            colors={ {black: black, white: white} }
             fen={ currentFen } 
             boardSize={ 200 }
         />
@@ -38,7 +41,7 @@ const Puzzle = ({ route, navigation }) => {
 
     const ChessBoardPuzzle = gestureHandlerRootHOC(() => (
         <Chessboard
-            colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
+            colors={ {black: black, white: white} }
             fen={ puzzleFen }
             onMove={({ state }) => {compareMoves(state)}}
         />
