@@ -9,15 +9,16 @@ import { useEffect } from 'react';
 import axios from 'axios';
 
 
-// useEffect(() => {
-//     axios.get(`${API}/board`) // this would return fen string from either opening or engine
-//     .then((result) => {
-//         updateFen(result.data);
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     })
-//     }, []);
+/* TO DOs:
+1. update buttons to match GAME.js
+2. update API POST method to create a game without assuming engine is white 
+3. update API PATCH method to send user_move_list back to backend
+4. create function to check what variation of opening we're playing
+--- 4a. create popup to tell player about this
+--- 4b. create popup to tell player when they've left opening and are playing real game
+
+NICE TO HAVE:
+1. create function to check if check or stalement or checkmate or gameover etc. */
 
 const Opening = ({ route, navigation }) => {
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -25,10 +26,15 @@ const Opening = ({ route, navigation }) => {
     const [currentFen, updateFen] = useState(initialFen); 
     const [gameID, updateGameID] = useState();
     const [moveList, updateMoveList] = useState();
-    const whitePlayer = route.color === 'white' ? 'user' : 'engine'; 
+    const whitePlayer = route.params.color === 'white' ? 'user' : 'engine'; 
+    const opening = route.params.opening;
     
     useEffect(() => {
-        axios.post(`${API}/games`, {"white": "engine", "opening": "Queen's Gambit" }) // this would return fen string from either opening or engine
+        console.log(whitePlayer);
+        console.log(opening);
+        console.log (route.params.opening);
+        console.log({"white": whitePlayer, "opening": route.params.opening});
+        axios.post(`${API}/games`, {"white": whitePlayer, "opening": opening,}) // this would return fen string from either opening or engine
         .then((result) => {
             console.log("We're inside the axios post call")
             console.log(result.data.game_id);
@@ -50,12 +56,12 @@ const Opening = ({ route, navigation }) => {
         // so it looks like ["d4"]
         let newMoveList = moveList;
         if (newMoveList) {newMoveList.push(state.history[0]);};
-        axios.patch(`${API}/games/${gameID}`, {"fen": state.fen})
+        updateMoveList(newMoveList);
+        axios.patch(`${API}/games/${gameID}`, {"fen": state.fen, "user_move_list":  moveList})
         .then((result) => {
             console.log("We're inside the axios patch call")
             console.log(moveList)
             updateFen(result.data.game.fen);
-            updateMoveList(newMoveList);
             // const newFen = fen
         })
         .catch((err) => {

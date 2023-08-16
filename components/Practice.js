@@ -8,7 +8,15 @@ import { Button, useTheme, Modal, Center, Image, Flex, Heading, Box } from "nati
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
+/* TO DOs:
+1. create functionality to display correct opening options based on color chosen
+-- 1a. update "Choose an opening to play against" for white
+2. fill modals with the info LOL
 
+NICE TO HAVE:
+1. figure out how to make buttons look selected or highlighted so choice is clear
+2. hide opening options until player chooses a color
+3. disable "START PLAYING" button until both choices are made */
 
 const Practice = ({ navigation }) => {
     const [showModal, setShowModal] = useState(false);
@@ -30,7 +38,7 @@ const Practice = ({ navigation }) => {
             setShowModal2(false);
             setShowModal3(false);
             console.log(name)
-            console.log(openingChoice)
+            console.log(openingChoice);
     };
 
     return (
@@ -39,8 +47,8 @@ const Practice = ({ navigation }) => {
             <Box h="30%">
             <Heading>Choose a color:</Heading>
             <Flex direction="row" align="center" justify="space-evenly" h="70%">
-            <Button isDisabled={true} onPress={() => pickColor("White")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
-            <Button onPress={() => pickColor("Black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
+            <Button onPress={() => pickColor("white")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
+            <Button onPress={() => pickColor("black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
             </Flex>
             </Box>
             <Box h="50%">

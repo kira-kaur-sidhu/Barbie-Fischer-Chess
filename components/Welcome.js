@@ -6,6 +6,14 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
+/* TO DOs:
+1. doublecheck that image size is scalable for different devices
+-- 1a. or turn it into text + image
+2. update button to match styling of other buttons
+
+NICE TO HAVEs:
+1. (REQUIRES LOGIN FUNCTIONALITY) change screen if user is logged in / can log in
+ */
 
 const Welcome = ({ navigation }) => {
     return (

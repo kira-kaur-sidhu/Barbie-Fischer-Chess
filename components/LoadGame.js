@@ -8,6 +8,12 @@ import { Button, useTheme, Image, AlertDialog, Spacer, Flex, HStack, Center, Hea
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
+/* THIS WHOLE PAGE IS A NICE TO HAVE LOL 
+but if you do want to work on it:
+
+1. attach API DELETE call to delete button
+2. create API GET to get all saved games
+3. create button to resume game (???? idk how to do that tho ???) */
 
 const LoadGame = () => {
         const data = [{
