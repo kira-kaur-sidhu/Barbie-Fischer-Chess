@@ -8,7 +8,7 @@ import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gestur
 import Chessboard from 'react-native-chessboard';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Center, Box, Button, Flex, Heading, AlertDialog } from 'native-base';
+import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog } from 'native-base';
 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
@@ -22,6 +22,9 @@ Nice to have:
 1. popup for check, checkmate, winning, losing, etc. */
 
 const Game = ({route, navigation}) => {
+    const { colors } = useTheme();
+    const black = colors['pink'][300]
+    const white = colors['pink'][50]
     const {height, width} = useWindowDimensions();
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
     const API = 'https://barbie-fischer-chess.onrender.com/games'
@@ -29,7 +32,8 @@ const Game = ({route, navigation}) => {
     const [oldFen, setOldFen] = useState();
     const [gameID, updateGameID] = useState();
     const [moveList, updateMoveList] = useState([]);
-    const whitePlayer = route.params.white
+    const whitePlayer = route.params.white;
+    const blackPlayer = route.params.white === 'engine' ? 'player' : 'engine';
     const [currentMove, setCurrentMove] = useState();
     const [isOpen, setIsOpen] = React.useState(false);
     const onClose = () => setIsOpen(false);
@@ -50,17 +54,21 @@ const Game = ({route, navigation}) => {
         })
     }, []);
 
+    function removeDuplicates(arr) {
+        return arr.filter((item,
+            index) => arr.indexOf(item) === index);
+    };
 
     const confirmMove = () => {
         let newMoveList = moveList;
         newMoveList.push(currentMove);
         updateMoveList(newMoveList);
         console.log({"fen": currentFen, "user_move_list": moveList});
-            axios.patch(`${API}/no_opening/${gameID}`, {"fen": currentFen, "user_move_list": moveList})
+            axios.patch(`${API}/no_opening/${gameID}`, {"fen": currentFen, "user_move_list": moveList, "white": whitePlayer})
             .then((result) => {
-                console.log("We're inside the patch call")
+                console.log("We're inside the patch call");
                 updateFen(result.data.fen);
-                setOldFen(result.data.fen)
+                setOldFen(result.data.fen);
             })
             .catch((err) => {
                 console.log(err);
@@ -88,13 +96,12 @@ const Game = ({route, navigation}) => {
     }
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
-                colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
+                colors={ {black: black, white: white} }
                 fen={ currentFen } 
                 onMove={({ state }) => {
                     updateFen(state.fen);
                     setCurrentMove(state.history[0]);
                  } }
-                 boardOrientation="black"
             />
         )
     );
@@ -102,18 +109,18 @@ const Game = ({route, navigation}) => {
     return (
         <GestureHandlerRootView>
             <Center>
-                <Flex direction="column" align="center" justify="space-between" h="100%" w="100%" safeAreaBottom>
+                <Flex direction="column" align="center" justify="space-between" h="95%" w="100%">
                     <Box w="100%">
-                    <Box bg={"#F3BAD5"} h={Math.floor(width / 8) * 1.5} w="100%" _text={{fontSize: 'md', fontWeight: 'bold'}}>Barbie</Box>
-                    <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
-                    <ChessBoardRender/>
+                        <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box>
+                        <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
+                            <ChessBoardRender/>
+                        </Box>
+                        <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>{whitePlayer}</Box>
                     </Box>
-                    <Box bg={"#F3BAD5"} paddingTop={Math.floor(width / 8) * 1} w="100%" _text={{textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>Player</Box>
-                    </Box>
-                    <Button.Group space={4} paddingBottom={10}>
-                        <Button onPress={undoMove}>Undo</Button>
+                    <Button.Group space={4}>
+                        <Button variant={'outline'} onPress={undoMove}>Undo</Button>
                         <Button onPress={confirmMove}>Confirm</Button>
-                        <Button onPress={() => setIsOpen(!isOpen)}> Resign</Button>
+                        <Button colorScheme={'muted'} onPress={() => setIsOpen(!isOpen)}> Resign</Button>
                     </Button.Group>
                     <AlertDialog isOpen={isOpen} onClose={onClose}>
                     <AlertDialog.Content>

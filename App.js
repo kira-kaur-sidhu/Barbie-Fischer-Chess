@@ -1,28 +1,43 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler'
 import Chessboard from 'react-native-chessboard';
 import Navigator from './Navigator';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 
 export default function App() {
+  const theme = extendTheme({
+    components: {
+      Button: {
+        baseStyle: {
+          rounded: 'md',
+        },
+        defaultProps: {
+          colorScheme: 'pink',
+          size: 'lg',
+          _text: {
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            letterSpacing: 1,
+          }
+        },
+      },
+      Heading: {
+        defaultProps: {
+          color: '#000000'
+        }
+      }
+    },
+  });
+  
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={theme}>
       <NavigationContainer>
         <Navigator/>
       </NavigationContainer>
     </NativeBaseProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
