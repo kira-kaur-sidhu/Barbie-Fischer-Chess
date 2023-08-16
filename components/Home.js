@@ -11,9 +11,7 @@ import 'react-native-gesture-handler';
 import {GestureHandlerRootView, NativeViewGestureHandler, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 /* TO DOs:
-1. change styling to match Figma and be consistent
-2. fix button spacing !!! !! !
-3. replace chessboard with image or something bc i'm tired
+1-3: all completed !
 4. fill in about app modal
 
 NICE TO HAVEs:

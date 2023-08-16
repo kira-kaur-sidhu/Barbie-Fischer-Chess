@@ -13,13 +13,11 @@ import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog, Text } from 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
 /* Things left to do:
-1. finish styling (low importance)
-2. add resign button aka delete in-progress game button
--- 2a. take user back Home 
-6. figure out how to display captured pieces
+all completed !
 
 Nice to have:
-1. popup for check, checkmate, winning, losing, etc. */
+1. popup for check, checkmate, winning, losing, etc. 
+2. figure out how to display captured pieces */
 
 const Game = ({route, navigation}) => {
     const { colors } = useTheme();

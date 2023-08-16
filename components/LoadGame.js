@@ -13,8 +13,7 @@ import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 but if you do want to work on it:
 
 1. attach API DELETE call to delete button
-2. create API GET to get all saved games
-3. create button to resume game (???? idk how to do that tho ???) */
+2. create button to resume game (???? idk how to do that tho ???) */
 
 const LoadGame = () => {
     const [savedGames, setSavedGames] = useState([]);
