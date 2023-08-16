@@ -36,8 +36,9 @@ const Home = ( { navigation }) => {
                 </Box>
                 <VStack w="100%" space={4} px="2" mt="4" alignItems="center" justifyContent="center">
                 <Button w={defaultWidth} onPress={() => setShowModal2(true)}>NEW GAME</Button>
-                <Button w={defaultWidth} onPress={() => navigation.navigate('Practice')}>PRACTICE</Button>
-                <Button w={defaultWidth} onPress={() => navigation.navigate('Load Game')}>LOAD GAME</Button>
+                <Button variant="subtle" w={defaultWidth} onPress={() => navigation.navigate('Practice')}>PRACTICE</Button>
+                <Button colorScheme="light" variant="subtle" w={defaultWidth} onPress={() => navigation.navigate('Puzzle')}>PUZZLE GAME</Button>
+                <Button colorScheme="light" w={defaultWidth} onPress={() => navigation.navigate('Load Game')}>LOAD GAME</Button>
                 <Button w={defaultWidth} variant={'ghost'} onPress={() => setShowModal(true)}>ABOUT APP</Button>
                 </VStack>
                 </Flex>
