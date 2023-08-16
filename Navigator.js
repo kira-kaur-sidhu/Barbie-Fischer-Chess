@@ -1,5 +1,4 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Welcome from './components/Welcome';
 import Home from './components/Home';
@@ -13,16 +12,20 @@ const Stack = createNativeStackNavigator()
 
 const Navigator = (props) => {
     return(
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+            contentStyle:{
+              backgroundColor:'#FFFFFF'
+            }
+         }}  initialRouteName="Welcome">
             <Stack.Screen
                 name="Welcome"
                 component={Welcome}
-                options={{title: "Welcome"}}
+                options={{headerShown: false}}
             />
             <Stack.Screen
                 name="Home"
                 component={Home}
-                options={{title: "Home"}}
+                options={{headerShown: false}}
             />
             <Stack.Screen
                 name="Game"
