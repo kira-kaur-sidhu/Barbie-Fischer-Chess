@@ -52,10 +52,6 @@ const Game = ({route, navigation}) => {
         })
     }, []);
 
-    function removeDuplicates(arr) {
-        return arr.filter((item,
-            index) => arr.indexOf(item) === index);
-    };
 
     const confirmMove = () => {
         let newMoveList = moveList;
@@ -99,7 +95,7 @@ const Game = ({route, navigation}) => {
                 onMove={({ state }) => {
                     updateFen(state.fen);
                     setCurrentMove(state.history[0]);
-                 } }
+                } }
             />
         )
     );
@@ -145,59 +141,6 @@ const Game = ({route, navigation}) => {
         </GestureHandlerRootView>
     )
 }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         backgroundColor: '#fff',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         marginTop: 10,
-//     },
-//     chessBox: {
-//     },
-//     chessWrapTop: {
-//         backgroundColor: '#F3BAD5',
-//         height: 50,
-//         width: '100%',
-//     },
-//     chessWrapBottom: {
-//         backgroundColor: '#F3BAD5',
-//         height: 50,
-//         width: '100%',
-//         marginTop: 405,
-//     },
-//     buttons: {
-//         padding: 10,
-//         margin: 20,
-//     },
-//     space: {
-//         width: 20,
-//         height: 20,
-//     },
-// });
-
-{/* <View style={styles.container}>
-<View style={styles.chessWrapTop}>
-    <Text>Barbie</Text>
-</View>
-<ChessBoardRender />
-<View style={styles.chessWrapBottom}>
-    <Text>You</Text>
-</View>
-<View style={styles.infoButtons}>
-    <View></View>
-    <View style={styles.buttons}>
-        <Button 
-        title="Confirm"/>
-        <View style={styles.space} />
-        <Button
-        title="Undo"/>
-        <View style={styles.space} />
-        <Button
-        title="Resign"/>
-    </View>
-</View>
-</View> */}
 
 
 export default Game;
