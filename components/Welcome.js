@@ -1,53 +1,27 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { useWindowDimensions } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { Text } from 'react-native';
+import { Center, Button, Image, AspectRatio, Box, View } from 'native-base';
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 /* TO DOs:
-1. doublecheck that image size is scalable for different devices
--- 1a. or turn it into text + image
-2. update button to match styling of other buttons
-
-NICE TO HAVEs:
-1. (REQUIRES LOGIN FUNCTIONALITY) change screen if user is logged in / can log in
- */
+all completed !
+*/
 
 const Welcome = ({ navigation }) => {
+    const { height, width } = useWindowDimensions();
+
     return (
-        <View style={styles.container}>
-            <Image 
-            style={styles.imageView}
-            source={require('../assets/splash-text.png')}
-            />
-            <View style={styles.buttonView}>
-                <Button
-                    color='#ED1B80'
-                    title="Get Started"
-                    onPress={() => navigation.navigate('Home')}
-                />
-            </View>
-        </View>
+        <Center h='100%'>
+            <Image source={require('../assets/splash-text.png')} alt={""}
+            style={{ flex: 1, width: width, resizeMode: 'center' }}/>
+            <Button w={width / 1.25} m={6} _text={{fontWeight: 'bold', letterSpacing: '1'}} onPress={() => navigation.navigate('Home')}>GET STARTED</Button>
+        </Center>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    imageView: {
-        flex: 1,
-        resizeMode: 'center',
-    },
-    buttonView: {
-        paddingBottom: 50,
-        width: '70%',
-    }
-});
 
 export default Welcome;

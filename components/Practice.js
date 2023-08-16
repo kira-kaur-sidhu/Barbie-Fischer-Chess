@@ -34,13 +34,13 @@ const Practice = ({ navigation }) => {
 
     const pickColor = (color) => {
         setColorChoice(color);
-        if (color === "Black") {
+        if (color === "black") {
             setText1("Queen's Gambit");
             setText2("Fried Liver"); 
             setText3("Ruy Lopez");
             setText4("Choose an Opening to Play Against:");
         }
-        if (color === "White") {
+        if (color === "white") {
             setText1("Black Opening 1");
             setText2("Black Opening 2"); 
             setText3("Black Opening 3"); 
@@ -56,7 +56,7 @@ const Practice = ({ navigation }) => {
             setShowModal2(false);
             setShowModal3(false);
             console.log(name)
-            console.log(openingChoice)
+            console.log(openingChoice);
     };
 
     return (
@@ -65,8 +65,8 @@ const Practice = ({ navigation }) => {
             <Box h="30%">
             <Heading>Choose a color:</Heading>
             <Flex direction="row" align="center" justify="space-evenly" h="70%">
-            <Button onPress={() => pickColor("White")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
-            <Button onPress={() => pickColor("Black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
+            <Button onPress={() => pickColor("white")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
+            <Button onPress={() => pickColor("black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
             </Flex>
             </Box>
             <Box h="50%">

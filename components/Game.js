@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import { useWindowDimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -7,50 +8,97 @@ import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gestur
 import Chessboard from 'react-native-chessboard';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Center, Box, Button, Flex, Heading } from 'native-base';
+import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog, Text } from 'native-base';
 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
 /* Things left to do:
-1. finish styling (low importance)
-2. add resign button aka delete in-progress game button
--- 2a. take user back Home 
-3. add API PATCH call to confirmMove function
-4. add API POST to a useEffect
-5. add option to play as black
-6. figure out how to display captured pieces
+all completed !
 
 Nice to have:
-1. popup for check, checkmate, winning, losing, etc. */
+1. popup for check, checkmate, winning, losing, etc. 
+2. figure out how to display captured pieces */
 
-const Game = () => {
+const Game = ({route, navigation}) => {
+    const { colors } = useTheme();
+    const black = colors['pink'][300]
+    const white = colors['pink'][50]
     const {height, width} = useWindowDimensions();
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    const API = 'https://barbie-fischer-chess.onrender.com/games'
     const [currentFen, updateFen] = useState(initialFen); 
+    const [oldFen, setOldFen] = useState();
+    const [gameID, updateGameID] = useState();
+    const [moveList, updateMoveList] = useState([]);
+    const whitePlayer = route.params.white;
+    const blackPlayer = route.params.white === 'engine' ? 'player' : 'engine';
     const [currentMove, setCurrentMove] = useState();
-    let oldFen;
+    const [isOpen, setIsOpen] = React.useState(false);
+    const onClose = () => setIsOpen(false);
 
 
+    useEffect(() => {
+        console.log(whitePlayer)
+        axios.post(`${API}/no_opening`, {"white": whitePlayer})
+        .then((result) => {
+            console.log("We are inside the axios post call")
+            console.log(result.data.game_id);
+            updateGameID(result.data.game_id);
+            updateFen(result.data.fen);
+            setOldFen(result.data.fen);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, []);
+
+    function removeDuplicates(arr) {
+        return arr.filter((item,
+            index) => arr.indexOf(item) === index);
+    };
 
     const confirmMove = () => {
-        const playMove = () => {
-
-        };
+        let newMoveList = moveList;
+        newMoveList.push(currentMove);
+        updateMoveList(newMoveList);
+        console.log({"fen": currentFen, "user_move_list": moveList});
+            axios.patch(`${API}/no_opening/${gameID}`, {"fen": currentFen, "user_move_list": moveList, "white": whitePlayer})
+            .then((result) => {
+                console.log("We're inside the patch call");
+                updateFen(result.data.fen);
+                setOldFen(result.data.fen);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     };
 
     const undoMove = () => {
         updateFen(oldFen);
     };
 
-
-
-    
+    const deleteGame = () => {
+        console.log("We're inside the delete game function"); 
+        console.log(gameID)
+        axios.delete(`${API}/${gameID}`)
+        .then((result) => {
+            
+            console.log("We're inside the axios delete call"); 
+            console.log(result.data);
+        })
+        .catch((err) => {
+            console.log(err); 
+        })
+        navigation.navigate('Home');
+        
+    }
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
-                colors={ {black: '#F3BAD5', white: '#FFFBFB'} }
+                colors={ {black: black, white: white} }
                 fen={ currentFen } 
-                onMove={({ state }) => { oldFen = currentFen;
+                onMove={({ state }) => {
                     updateFen(state.fen);
+                    setCurrentMove(state.history[0]);
                  } }
             />
         )
@@ -59,18 +107,39 @@ const Game = () => {
     return (
         <GestureHandlerRootView>
             <Center>
-                <Flex direction="column" align="center" justify="space-between" h="100%" w="100%" safeAreaBottom>
+                <Flex direction="column" align="center" justify="space-between" h="95%" w="100%">
                     <Box w="100%">
-                    <Box bg={"#F3BAD5"} h={Math.floor(width / 8) * 1.5} w="100%" _text={{fontSize: 'md', fontWeight: 'bold'}}>Barbie</Box>
-                    <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
-                    <ChessBoardRender/>
+                        <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box>
+                        <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
+                            <ChessBoardRender/>
+                        </Box>
+                        <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>{whitePlayer}</Box>
                     </Box>
-                    <Box bg={"#F3BAD5"} paddingTop={Math.floor(width / 8) * 1} w="100%" _text={{textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>Player</Box>
-                    </Box>
-                    <Button.Group space={4} paddingBottom={10}>
-                        <Button onPress={undoMove}>Undo</Button>
+                    <Button.Group space={4}>
+                        <Button variant={'outline'} onPress={undoMove}>Undo</Button>
                         <Button onPress={confirmMove}>Confirm</Button>
+                        <Button colorScheme={'muted'} onPress={() => setIsOpen(!isOpen)}> Resign</Button>
                     </Button.Group>
+                    <AlertDialog isOpen={isOpen} onClose={onClose}>
+                    <AlertDialog.Content>
+                    <AlertDialog.CloseButton />
+                    <AlertDialog.Header><Heading>Delete Game {gameID}</Heading></AlertDialog.Header>
+                    <AlertDialog.Body>
+                        <Text fontSize={'md'}>This will remove all data relating to this game. This action cannot be
+                        reversed. Deleted data can not be recovered.</Text>
+                    </AlertDialog.Body>
+                    <AlertDialog.Footer>
+                        <Button.Group space={2}>
+                        <Button variant="unstyled" colorScheme="coolGray" onPress={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme="danger" onPress={deleteGame}>
+                            Delete
+                        </Button>
+                        </Button.Group>
+                    </AlertDialog.Footer>
+                    </AlertDialog.Content>
+                </AlertDialog>
                 </Flex>
             </Center>
         </GestureHandlerRootView>
