@@ -61,16 +61,16 @@ const Practice = ({ navigation }) => {
 
     return (
         <Center>
-            <Box h="100%" safeArea>
+            <Box h="100%" p={4} safeArea>
             <Box h="30%">
             <Heading>Choose a color:</Heading>
-            <Flex direction="row" align="center" justify="space-evenly" h="70%">
+            <Flex direction="row" align="center" justify="space-evenly" h="70%" w="100%">
             <Button onPress={() => pickColor("white")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
             <Button onPress={() => pickColor("black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
             </Flex>
             </Box>
             <Box h="50%">
-            <Heading>{text4}</Heading>
+            <Heading>Choose Opening to Play Against</Heading>
             <Flex direction="column" align="center" justify="space-evenly" h="70%">
             <Button onPress={() => setShowModal(true)}>{text1}</Button>
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
