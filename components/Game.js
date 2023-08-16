@@ -35,6 +35,7 @@ const Game = ({route, navigation}) => {
     const [currentMove, setCurrentMove] = useState();
     const [isOpen, setIsOpen] = React.useState(false);
     const onClose = () => setIsOpen(false);
+    const [captured, setCaptured] = useState({});
 
 
     useEffect(() => {
@@ -63,11 +64,11 @@ const Game = ({route, navigation}) => {
                 console.log("We're inside the patch call");
                 updateFen(result.data.fen);
                 setOldFen(result.data.fen);
+                capturedPieces(result.data.fen)
             })
             .catch((err) => {
                 console.log(err);
             })
-        capturedPieces(currentFen)
     };
 
     const undoMove = () => {
@@ -147,7 +148,7 @@ const Game = ({route, navigation}) => {
         for (const piece in initialPieces) {
             captured[piece] = initialPieces[piece] - current[piece];
         }
-        console.log(captured);
+        setCaptured(captured);
     }
 
     const ChessBoardRender = gestureHandlerRootHOC(() => (
@@ -168,6 +169,7 @@ const Game = ({route, navigation}) => {
                 <Flex direction="column" align="center" justify="space-between" h="95%" w="100%">
                     <Box w="100%">
                         <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box>
+                        <Box></Box>
                         <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
                             <ChessBoardRender/>
                         </Box>
