@@ -41,9 +41,9 @@ const Practice = ({ navigation }) => {
             setText4("Choose an Opening to Play Against:");
         }
         if (color === "white") {
-            setText1("Black Opening 1");
-            setText2("Black Opening 2"); 
-            setText3("Black Opening 3"); 
+            setText1("Sicilian Defense");
+            setText2("French Defense"); 
+            setText3("King's Indian Defense"); 
             setText4("Choose an Opening to Play:");
         }
         console.log(color)
