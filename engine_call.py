@@ -73,6 +73,7 @@ class ChessGame:
         if len(engine_list) >= 12: 
             depth = 5 
         result = board.san(engine.search(board, engine_color, depth))
+        print(result)
         board.push_san(result)
         new_engine_list = engine_list[:]
         new_engine_list.append(result)

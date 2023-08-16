@@ -60,7 +60,7 @@ def user_moves(board, game_board, move_list):
 def opening_moves(board, game_board, current_opening, white_list, black_list, engine, engine_color):
     move_index = len(black_list) + 1 
     result = None 
-    variation_name = ""
+    variation_name = [""]
     
     moves_list = []
     for i in range(len(white_list)):

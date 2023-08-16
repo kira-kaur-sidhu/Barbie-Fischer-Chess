@@ -19,7 +19,8 @@ class Game(db.Model):
             "fen" : self.fen,
             "game_status": self.game_status,
             "user_move_list":self.user_move_list,
-            "engine_move_list":self.engine_move_list
+            "engine_move_list":self.engine_move_list,
+            "white": self.white
         }
         return response
     
