@@ -12,7 +12,7 @@
         "Summary": "The Fried Liver Attack, also called the Fegatello Attack (named after an Italian dish), is a chess opening. This opening is a variation of the Two Knights Defense in which White sacrifices a knight for an attack on Black's king.", 
         "Variations": {
             "Main": "The classical response. Black defends the e5 pawn and develops a Knight. White has several options available; references below.",
-            "Polero's Defense": "The 'Polerio Defense' is the best defensive plan for Black against the Fried Liver Attack. Na5 is the defining move of the 'Polerio Defense' and it looks a little weird, doesn't it? 'Knights on the rim are grim', and all that. However, this is Blacks best chance at maintaining equality.",
+            "Polerio Defense": "The 'Polerio Defense' is the best defensive plan for Black against the Fried Liver Attack. Na5 is the defining move of the 'Polerio Defense' and it looks a little weird, doesn't it? 'Knights on the rim are grim', and all that. However, this is Blacks best chance at maintaining equality.",
             "Traxler's CounterAttack": "Bc5 is the defining move of the 'Traxler Counter Gambit'. Ignoring the obvious threat on f7, Black boldly sets up a sacrifice of their own on f2."
         }
     },
@@ -23,7 +23,7 @@
             "Main": "The Main Line of the Ruy Lopez sees White positioning their pieces to prepare for a long struggle for central control. Black starts to fend off the white light-squared bishop with 3...a6. After White castles, the game can still take many different directions.",
             "Marshall Attack": "The Marshall Attack was developed by the brilliant attacking player Frank Marshall and used for the first time against Jose Raul Capablanca in 1918. Black gambits a pawn to build a quick attack against the white king.",
             "Closed": "In the Closed Variation, Black puts their dark-squared bishop on e7, usually inside the pawn chain. After Black's fifth move, play can continue in many different ways.",
-            "Arkhangelsk": "The Arkhangelsk Variation is a good way for tactical players to face the Ruy Lopez. This line usually leads to open games, where Black can try to use their bishop pair to create counterplay. In this line, White wins 39% of games, draws 30%, and Black wins 30%."
+            "Archangel": "The Archangel Variation is a good way for tactical players to face the Ruy Lopez. This line usually leads to open games, where Black can try to use their bishop pair to create counterplay. In this line, White wins 39% of games, draws 30%, and Black wins 30%."
             }
     },
     "Sicilian Defense": {
