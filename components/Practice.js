@@ -7,10 +7,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button, useTheme, Modal, Center, Image, Flex, Heading, Box } from "native-base";
 import 'react-native-gesture-handler';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
+import data from '../openingDescriptions.json';
 
 /* TO DOs:
-1. create functionality to display correct opening options based on color chosen
--- 1a. update "Choose an opening to play against" for white
+1. completed !
+-- 1a. completed !
 2. fill modals with the info LOL
 
 NICE TO HAVE:
@@ -65,8 +66,8 @@ const Practice = ({ navigation }) => {
             <Box h="30%">
             <Heading>Choose a color:</Heading>
             <Flex direction="row" align="center" justify="space-evenly" h="70%" w="100%">
-            <Button onPress={() => pickColor("white")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
-            <Button onPress={() => pickColor("black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
+            <Button variant={'subtle'} onPress={() => pickColor("white")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
+            <Button variant={'subtle'} onPress={() => pickColor("black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
             </Flex>
             </Box>
             <Box h="50%">
@@ -78,7 +79,7 @@ const Practice = ({ navigation }) => {
                     <Modal.CloseButton />
                     <Modal.Header><Heading size={"md"}>{text1}</Heading></Modal.Header>
                     <Modal.Body>
-                
+                        <Text>{showModal && data[text1]["Summary"]}</Text>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button.Group space={2}>
@@ -95,7 +96,7 @@ const Practice = ({ navigation }) => {
                     <Modal.CloseButton />
                     <Modal.Header><Heading size={"md"}>{text2}</Heading></Modal.Header>
                     <Modal.Body>
-                
+                        <Text>{showModal2 && data[text2]["Summary"]}</Text>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button.Group space={2}>
@@ -112,7 +113,7 @@ const Practice = ({ navigation }) => {
                     <Modal.CloseButton />
                     <Modal.Header><Heading size={"md"}>{text3}</Heading></Modal.Header>
                     <Modal.Body>
-                
+                        <Text>{showModal3 && data[text3]["Summary"]}</Text>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button.Group space={2}>

@@ -17,6 +17,7 @@ but if you do want to work on it:
 
 const LoadGame = () => {
     const [savedGames, setSavedGames] = useState([]);
+    const [gameID, setGameID] = useState();
     const API = 'https://barbie-fischer-chess.onrender.com/games'
     const [isOpen, setIsOpen] = React.useState(false);
     const onClose = () => setIsOpen(false);
@@ -24,7 +25,11 @@ const LoadGame = () => {
     // getting [AxiosError: Network Error]
     useEffect(() => {
       console.log('im inside useEffect');
-      axios.get(`${URL}`)
+      getAllGames();
+    }, []);
+
+    const getAllGames = () => {
+      axios.get(`${API}`)
       .then((result) => {
         console.log('im inside the GET request')
         const newGames = result.data.map((game) => {
@@ -33,16 +38,31 @@ const LoadGame = () => {
             fen: game.fen,
             opening: game.opening
           };
-        });
+        }).reverse();
         setSavedGames(newGames);
       })
       .catch((err) => {
         console.log(err);
       })
-    }, []);
+    };
+
+    const deleteGame = () => {
+      console.log("We're inside the delete game function"); 
+      console.log(gameID)
+      axios.delete(`${API}/${gameID}`)
+      .then((result) => {
+          console.log("We're inside the axios delete call"); 
+          console.log(result.data);
+          getAllGames();
+          setIsOpen(!isOpen);
+      })
+      .catch((err) => {
+          console.log(err); 
+      })
+  }
 
     return (
-      <Box safeArea>
+      <Box p={2} safeArea>
         <Heading fontSize="xl" p="4" pb="3">
           All Saved Games
         </Heading>
@@ -59,7 +79,7 @@ const LoadGame = () => {
                       </Text>
                       </HStack>
                     <Spacer />
-                    <Button variant={'ghost'} colorScheme="danger" onPress={() => setIsOpen(!isOpen)}>
+                    <Button variant={'ghost'} colorScheme="danger" onPress={() => {setIsOpen(!isOpen); setGameID(item.id);}}>
                     <Image height="5" width="5" source={require('../assets/trash.png')} alt={"trash"}></Image>
                     </Button>
                     </Flex>
@@ -78,7 +98,7 @@ const LoadGame = () => {
                   <Button variant="unstyled" colorScheme="coolGray" onPress={onClose}>
                     Cancel
                   </Button>
-                  <Button colorScheme="danger" onPress={onClose}>
+                  <Button colorScheme="danger" onPress={deleteGame}>
                     Delete
                   </Button>
                 </Button.Group>
