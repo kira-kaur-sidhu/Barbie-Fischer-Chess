@@ -67,6 +67,7 @@ const Game = ({route, navigation}) => {
             .catch((err) => {
                 console.log(err);
             })
+        capturedPieces(currentFen)
     };
 
     const undoMove = () => {
@@ -88,6 +89,67 @@ const Game = ({route, navigation}) => {
         navigation.navigate('Home');
         
     }
+
+    const capturedPieces = (fen) => {
+        const fenArray = fen.split(" ")
+
+        const initialPieces = {
+            p: 8,
+            b: 2,
+            n: 2,
+            r: 2,
+            q: 1,
+            k: 1,
+            P: 8,
+            B: 2,
+            N: 2,
+            R: 2,
+            Q: 1,
+            K: 1
+        };
+
+        const current = {
+            p: 0,
+            b: 0,
+            n: 0,
+            r: 0,
+            q: 0,
+            k: 0,
+            P: 0,
+            B: 0,
+            N: 0,
+            R: 0,
+            Q: 0,
+            K: 0
+        };
+
+        const captured = {
+            p: 0,
+            b: 0,
+            n: 0,
+            r: 0,
+            q: 0,
+            k: 0,
+            P: 0,
+            B: 0,
+            N: 0,
+            R: 0,
+            Q: 0,
+            K: 0
+        };
+
+        for (const letter of fenArray[0]) {
+            if (letter != '/') {
+                current[letter] += 1
+            }
+        };
+
+        for (const piece in initialPieces) {
+            captured[piece] = initialPieces[piece] - current[piece];
+        }
+        console.log(captured);
+    }
+
     const ChessBoardRender = gestureHandlerRootHOC(() => (
             <Chessboard
                 colors={ {black: black, white: white} }
