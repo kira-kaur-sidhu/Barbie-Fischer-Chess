@@ -24,10 +24,28 @@ const Practice = ({ navigation }) => {
     const [showModal3, setShowModal3] = useState(false);
     const [colorChoice, setColorChoice] = useState();
     const [openingChoice, setOpening] = useState();
+    const [text1, setText1] = useState('---'); 
+    const [text2, setText2] = useState('---'); 
+    const [text3, setText3] = useState('---'); 
+    const [text4, setText4] = useState();
     const theme = useTheme();
+
+    
 
     const pickColor = (color) => {
         setColorChoice(color);
+        if (color === "black") {
+            setText1("Queen's Gambit");
+            setText2("Fried Liver"); 
+            setText3("Ruy Lopez");
+            setText4("Choose an Opening to Play Against:");
+        }
+        if (color === "white") {
+            setText1("Sicilian Defense");
+            setText2("French Defense"); 
+            setText3("King's Indian Defense"); 
+            setText4("Choose an Opening to Play:");
+        }
         console.log(color)
         console.log(colorChoice)
 };
@@ -43,22 +61,22 @@ const Practice = ({ navigation }) => {
 
     return (
         <Center>
-            <Box h="100%" safeArea>
+            <Box h="100%" p={4} safeArea>
             <Box h="30%">
             <Heading>Choose a color:</Heading>
-            <Flex direction="row" align="center" justify="space-evenly" h="70%">
+            <Flex direction="row" align="center" justify="space-evenly" h="70%" w="100%">
             <Button onPress={() => pickColor("white")}><Image size="sm" source={require('../assets/wp.png')} alt={"white"} /></Button>
             <Button onPress={() => pickColor("black")}><Image size="sm" source={require('../assets/bp.png')} alt={"black"} /></Button>
             </Flex>
             </Box>
             <Box h="50%">
-            <Heading>Choose an opening to play against:</Heading>
+            <Heading>Choose Opening to Play Against</Heading>
             <Flex direction="column" align="center" justify="space-evenly" h="70%">
-            <Button onPress={() => setShowModal(true)}>Queen's Gambit</Button>
+            <Button onPress={() => setShowModal(true)}>{text1}</Button>
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <Modal.Content maxWidth="400px">
                     <Modal.CloseButton />
-                    <Modal.Header><Heading size={"md"}>Queen's Gambit</Heading></Modal.Header>
+                    <Modal.Header><Heading size={"md"}>{text1}</Heading></Modal.Header>
                     <Modal.Body>
                 
                     </Modal.Body>
@@ -71,11 +89,11 @@ const Practice = ({ navigation }) => {
                 </Modal.Content>
             </Modal>
         
-            <Button onPress={() => setShowModal2(true)}>Fried Liver</Button>
+            <Button onPress={() => setShowModal2(true)}>{text2}</Button>
             <Modal isOpen={showModal2} onClose={() => setShowModal2(false)}>
                 <Modal.Content maxWidth="400px">
                     <Modal.CloseButton />
-                    <Modal.Header><Heading size={"md"}>Fried Liver</Heading></Modal.Header>
+                    <Modal.Header><Heading size={"md"}>{text2}</Heading></Modal.Header>
                     <Modal.Body>
                 
                     </Modal.Body>
@@ -88,11 +106,11 @@ const Practice = ({ navigation }) => {
                 </Modal.Content>
             </Modal>
 
-            <Button onPress={() => setShowModal3(true)}>Ruy Lopez</Button>
+            <Button onPress={() => setShowModal3(true)}>{text3}</Button>
             <Modal isOpen={showModal3} onClose={() => setShowModal3(false)}>
                 <Modal.Content maxWidth="400px">
                     <Modal.CloseButton />
-                    <Modal.Header><Heading size={"md"}>Ruy Lopez</Heading></Modal.Header>
+                    <Modal.Header><Heading size={"md"}>{text3}</Heading></Modal.Header>
                     <Modal.Body>
                 
                     </Modal.Body>
