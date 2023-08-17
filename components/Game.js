@@ -1,9 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
 import { useWindowDimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard from 'react-native-chessboard';
 import { useState } from 'react';
@@ -12,12 +9,6 @@ import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog, Text } from 
 
 const API = 'https://barbie-fischer-chess.onrender.com'
 
-/* Things left to do:
-all completed !
-
-Nice to have:
-1. popup for check, checkmate, winning, losing, etc. 
-2. figure out how to display captured pieces */
 
 const Game = ({route, navigation}) => {
     const { colors } = useTheme();

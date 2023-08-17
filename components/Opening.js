@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard from 'react-native-chessboard';
 import { useState, useEffect } from 'react';
@@ -10,16 +7,6 @@ import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog, Text, Modal 
 import { useWindowDimensions } from 'react-native';
 import data from '../openingDescriptions.json';
 
-/* TO DOs:
-1. update buttons to match GAME.js
-2. update API POST method to create a game without assuming engine is white 
-3. update API PATCH method to send user_move_list back to backend
-4. create function to check what variation of opening we're playing
---- 4a. create popup to tell player about this
---- 4b. create popup to tell player when they've left opening and are playing real game
-
-NICE TO HAVE:
-1. create function to check if check or stalement or checkmate or gameover etc. */
 
 const Opening = ({ route, navigation }) => {
     const { colors } = useTheme();
