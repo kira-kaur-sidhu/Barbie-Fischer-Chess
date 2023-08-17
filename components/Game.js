@@ -52,6 +52,7 @@ const Game = ({route, navigation}) => {
         let newMoveList = moveList;
         newMoveList.push(currentMove);
         updateMoveList(newMoveList);
+        capturedPieces(currentFen);
         console.log({"fen": currentFen, "user_move_list": moveList});
             axios.patch(`${API}/no_opening/${gameID}`, {"fen": currentFen, "user_move_list": moveList, "white": whitePlayer})
             .then((result) => {
@@ -59,7 +60,7 @@ const Game = ({route, navigation}) => {
                 updateFen(result.data.fen);
                 setOldFen(result.data.fen);
                 updateEngineList(result.data.engine_move_list)
-                capturedPieces(result.data.fen)
+                capturedPieces(currentFen);
             })
             .catch((err) => {
                 console.log(err);
@@ -160,7 +161,7 @@ const Game = ({route, navigation}) => {
         <GestureHandlerRootView>
             <Center>
                 <Flex direction="column" align="center" justify="space-between" h="95%" w="100%">
-                    <Box w="100%" style={{backgroundColor:"#F3BAD5", paddingTop:10, paddingBottom:10, borderRadius: 4}}>
+                    <Box w="100%" style={{backgroundColor:"#F3BAD5", paddingTop:6, paddingBottom:6, borderRadius: 4}}>
                         <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box>
                         <Box style={{flexDirection: 'row'}}>{capturedPiece("white").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box>
                         <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
@@ -171,7 +172,7 @@ const Game = ({route, navigation}) => {
                     </Box>
                     <Button.Group space={4}>
                         <Button variant={'outline'} onPress={undoMove}>Undo</Button>
-                        <Button onPress={confirmMove}>Confirm</Button>
+                        <Button variant={'subtle'} onPress={confirmMove}>Confirm</Button>
                         <Button colorScheme={'muted'} onPress={() => setIsOpen(!isOpen)}> Resign</Button>
                     </Button.Group>
                     <AlertDialog isOpen={isOpen} onClose={onClose}>

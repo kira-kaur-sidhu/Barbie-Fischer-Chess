@@ -4,7 +4,7 @@ import Chessboard from 'react-native-chessboard';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Center, Box, Button, Flex, Heading, useTheme, AlertDialog, Text, Modal } from 'native-base';
-import { useWindowDimensions, Image } from 'react-native';
+import { useWindowDimensions, Image, ScrollView } from 'react-native';
 import data from '../openingDescriptions.json';
 
 
@@ -20,6 +20,7 @@ const Opening = ({ route, navigation }) => {
     const [gameID, updateGameID] = useState();
     const [variation, setVariation] = useState('');
     const [moveList, updateMoveList] = useState([]);
+    const [engineMoveList, updateEngineList] = useState([]);
     const whitePlayer = route.params.color === 'white' ? 'player' : 'engine'; 
     const blackPlayer = route.params.color === 'black' ? 'player' : 'engine';
     const [currentMove, setCurrentMove] = useState();
@@ -27,7 +28,7 @@ const Opening = ({ route, navigation }) => {
     const onClose = () => setIsOpen(false);
     const opening = route.params.opening;
     const [showModal, setShowModal] = useState(false);
-    const [capturedP, setCapturedP]= useState([]);
+    const [capturedP, setCapturedP]= useState({p: 0, b: 0, n: 0, r: 0, q: 0, k: 0, P: 0, B: 0, N: 0, R: 0, Q: 0, K: 0});
 
     useEffect(() => {
         console.log(whitePlayer);
@@ -41,7 +42,7 @@ const Opening = ({ route, navigation }) => {
             updateGameID(result.data.game_id);
             updateFen(result.data.fen);
             setOldFen(result.data.fen);
-            capturedPieces();
+            updateEngineList(result.data.engine_move_list);
         })
         .catch((err) => {
             console.log(err);
@@ -58,6 +59,7 @@ const Opening = ({ route, navigation }) => {
         let newMoveList = moveList;
         newMoveList.push(currentMove);
         updateMoveList(newMoveList);
+        capturedPieces();
         console.log({"fen": currentFen, "user_move_list": moveList});
             axios.patch(`${API}/${gameID}`, {"fen": currentFen, "user_move_list": moveList, "white": whitePlayer})
             .then((result) => {
@@ -65,8 +67,9 @@ const Opening = ({ route, navigation }) => {
                 console.log(result.data.game.fen);
                 updateFen(result.data.game.fen);
                 setOldFen(result.data.game.fen);
-                checkVariation(result.data.game.opening_variation);
                 capturedPieces();
+                updateEngineList(result.data.engine_move_list);
+                checkVariation(result.data.game.opening_variation);
             })
             .catch((err) => {
                 console.log(err);
@@ -144,7 +147,6 @@ const Opening = ({ route, navigation }) => {
                     };
             }
         };
-        console.log(pieces)
         return pieces
     };
 
@@ -180,17 +182,19 @@ const Opening = ({ route, navigation }) => {
                                 </Modal.Footer>
                             </Modal.Content>
                         </Modal>
-                        <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box>
-                        <Box style={{flexDirection: 'row'}}>{capturedPiece("white").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box>
-                        <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
-                            <ChessBoardRender/>
+                        <Box style={{backgroundColor:"#F3BAD5", paddingTop:6, paddingBottom:6, borderRadius: 4}}>
+                            <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>{blackPlayer}</Box>
+                            <Box style={{flexDirection: 'row'}}>{capturedPiece("white").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box>
+                            <Box w={Math.floor(width / 8) * 8} h={Math.floor(width / 8) * 8}>
+                                <ChessBoardRender/>
+                            </Box>
+                            <Box style={{flexDirection: 'row'}}>{capturedPiece("black").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box>
+                            <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>{whitePlayer}</Box>
                         </Box>
-                        <Box style={{flexDirection: 'row'}}>{capturedPiece("black").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box>
-                        <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>{whitePlayer}</Box>
                     </Box>
                     <Button.Group space={4} mt={4}>
                         <Button variant={'outline'} onPress={undoMove}>Undo</Button>
-                        <Button onPress={confirmMove}>Confirm</Button>
+                        <Button variant={'subtle'} onPress={confirmMove}>Confirm</Button>
                         <Button colorScheme={'muted'} onPress={() => setIsOpen(!isOpen)}> Resign</Button>
                     </Button.Group>
                     <AlertDialog isOpen={isOpen} onClose={onClose}>

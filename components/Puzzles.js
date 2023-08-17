@@ -146,6 +146,7 @@ const Puzzle = ({ route, navigation }) => {
                 <View style={ {height: 200} }/>
                 <Button variant="subtle" size="sm" onPress={demonstrateMoves}>Play Demo!</Button>
                 <View style={ {height: 25} } />
+                <Box style={{backgroundColor:"#F3BAD5", paddingTop:10, paddingBottom:10, borderRadius: 4}}>
                     <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>  Engine</Box>
                     {/* <Box style={{flexDirection: 'row'}}>{capturedPiece("white").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box> */}
                     <Box>
@@ -153,7 +154,7 @@ const Puzzle = ({ route, navigation }) => {
                     </Box>
                     {/* <Box style={{flexDirection: 'row'}}>{capturedPiece("black").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box> */}
                     <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>Player</Box>
-
+                </Box>
             </Center>
         </GestureHandlerRootView>
     )

@@ -16,6 +16,7 @@ const Home = ( { navigation }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    const [showModal3, setShowModal3] = useState(false);
     
     
     return (
@@ -29,11 +30,30 @@ const Home = ( { navigation }) => {
                     <VStack w="100%" space={4} px="2" mt="4" alignItems="center" justifyContent="center">
                         <Button w={defaultWidth} onPress={() => setShowModal2(true)}>NEW GAME</Button>
                         <Button variant="subtle" w={defaultWidth} onPress={() => navigation.navigate('Practice')}>PRACTICE</Button>
-                        <Button colorScheme="light" variant="subtle" w={defaultWidth} onPress={() => navigation.navigate('Puzzle')}>PUZZLE GAME</Button>
+                        <Button colorScheme="light" variant="subtle" w={defaultWidth} onPress={() => setShowModal3(true)}>PUZZLE GAME</Button>
                         <Button colorScheme="light" w={defaultWidth} onPress={() => navigation.navigate('Load Game')}>LOAD GAME</Button>
                         <Button w={defaultWidth} variant={'ghost'} onPress={() => setShowModal(true)}>ABOUT APP</Button>
                     </VStack>
                 </Flex>
+
+                <Modal isOpen={showModal3} onClose={() => setShowModal3(false)}>
+                    <Modal.Content maxWidth="400px">
+                        <Modal.CloseButton />
+                        <Modal.Header>
+                            <Heading>Select Puzzle Opening</Heading>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Flex direction="row" align="center" justify="space-evenly" w="100%">
+                                <Button variant={'subtle'} onPress={() => navigation.navigate('Puzzle')}>
+                                    Queen's Gambit - Accepted Variation
+                                </Button>
+                            </Flex>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant='ghost' onPress={() => {setShowModal2(false);}}>GO BACK</Button>
+                        </Modal.Footer>
+                    </Modal.Content>
+                </Modal>
 
                 <Modal isOpen={showModal2} onClose={() => setShowModal2(false)}>
                     <Modal.Content maxWidth="400px">
@@ -64,8 +84,8 @@ const Home = ( { navigation }) => {
                             <Heading>About</Heading>
                         </Modal.Header>
                         <Modal.Body>
-                            <Text fontSize={'md'}>
-                                A capstone project created by Kira, Kim, Sarah, and Jasmine.
+                            <Text fontSize={'md'} textAlign={'center'}>
+                                A capstone project created by Kira, Kim, Sarah, and Jasmine. This app is intended for beginner chess players who want to learn more about openings! You can train your knowledge on popular chess openings in the puzzle game, play against them to defeat them in practice mode, or just play a fun game of chess against our engine, Barbie Fischer, who decided our color scheme. You can also load past games as well. Have fun learning openings, with the opportunity to play into the middle and end game!
                             </Text>
                         </Modal.Body>
                     </Modal.Content>
