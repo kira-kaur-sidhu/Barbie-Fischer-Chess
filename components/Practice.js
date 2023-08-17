@@ -1,20 +1,10 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button, useTheme, Modal, Center, Image, Flex, Heading, Box } from "native-base";
+import { Button, useTheme, Modal, Center, Image, Flex, Heading, Box, Text } from "native-base";
 import 'react-native-gesture-handler';
-import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import data from '../openingDescriptions.json';
 
-/* TO DOs:
-1. completed !
--- 1a. completed !
-2. fill modals with the info LOL
-
-NICE TO HAVE:
+/* NICE TO HAVE:
 1. figure out how to make buttons look selected or highlighted so choice is clear
 2. hide opening options until player chooses a color
 3. disable "START PLAYING" button until both choices are made */
@@ -25,13 +15,11 @@ const Practice = ({ navigation }) => {
     const [showModal3, setShowModal3] = useState(false);
     const [colorChoice, setColorChoice] = useState();
     const [openingChoice, setOpening] = useState();
-    const [text1, setText1] = useState('---'); 
-    const [text2, setText2] = useState('---'); 
-    const [text3, setText3] = useState('---'); 
+    const [text1, setText1] = useState(); 
+    const [text2, setText2] = useState(); 
+    const [text3, setText3] = useState(); 
     const [text4, setText4] = useState();
     const theme = useTheme();
-
-    
 
     const pickColor = (color) => {
         setColorChoice(color);
@@ -71,9 +59,9 @@ const Practice = ({ navigation }) => {
             </Flex>
             </Box>
             <Box h="50%">
-            <Heading>Choose Opening to Play Against</Heading>
+            <Heading>Choose Opening to Play Against:</Heading>
             <Flex direction="column" align="center" justify="space-evenly" h="70%">
-            <Button onPress={() => setShowModal(true)}>{text1}</Button>
+            {colorChoice && <Button onPress={() => setShowModal(true)}>{text1}</Button>}
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <Modal.Content maxWidth="400px">
                     <Modal.CloseButton />
@@ -84,13 +72,13 @@ const Practice = ({ navigation }) => {
                     <Modal.Footer>
                         <Button.Group space={2}>
                             <Button variant="unstyled" onPress={() => {setShowModal(false);}}>GO BACK</Button>
-                            <Button onPress={() => {pickOpening("Queen's Gambit")}}>CHOOSE</Button>
+                            <Button onPress={() => {pickOpening(text1)}}>CHOOSE</Button>
                         </Button.Group>
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>
         
-            <Button onPress={() => setShowModal2(true)}>{text2}</Button>
+            {colorChoice && <Button onPress={() => setShowModal2(true)}>{text2}</Button>}
             <Modal isOpen={showModal2} onClose={() => setShowModal2(false)}>
                 <Modal.Content maxWidth="400px">
                     <Modal.CloseButton />
@@ -101,13 +89,13 @@ const Practice = ({ navigation }) => {
                     <Modal.Footer>
                         <Button.Group space={2}>
                             <Button variant="unstyled" onPress={() => {setShowModal(false);}}>GO BACK</Button>
-                            <Button onPress={() => {pickOpening("Fried Liver")}}>CHOOSE</Button>
+                            <Button onPress={() => {pickOpening(text2)}}>CHOOSE</Button>
                         </Button.Group>
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>
 
-            <Button onPress={() => setShowModal3(true)}>{text3}</Button>
+            {colorChoice && <Button onPress={() => setShowModal3(true)}>{text3}</Button>}
             <Modal isOpen={showModal3} onClose={() => setShowModal3(false)}>
                 <Modal.Content maxWidth="400px">
                     <Modal.CloseButton />
@@ -118,7 +106,7 @@ const Practice = ({ navigation }) => {
                     <Modal.Footer>
                         <Button.Group space={2}>
                             <Button variant="unstyled" onPress={() => {setShowModal(false);}}>GO BACK</Button>
-                            <Button onPress={() => {pickOpening("Ruy Lopez")}}>CHOOSE</Button>
+                            <Button onPress={() => {pickOpening(text3)}}>CHOOSE</Button>
                         </Button.Group>
                     </Modal.Footer>
                 </Modal.Content>
@@ -128,7 +116,7 @@ const Practice = ({ navigation }) => {
             <Flex direction="column" height="15%" align="center" justify="space-evenly">
             <Text>You're playing as {colorChoice}</Text>
             <Text>The opening is {openingChoice}</Text>
-            <Button onPress={() => navigation.navigate('Opening', {opening: openingChoice, color: colorChoice,})}>START PLAYING</Button>
+            <Button mt={2} onPress={() => navigation.navigate('Opening', {opening: openingChoice, color: colorChoice,})}>START PLAYING</Button>
             </Flex>
             </Box>
         </Center>

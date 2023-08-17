@@ -1,19 +1,9 @@
 import * as React from 'react';
 import axios from 'axios';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button, useTheme, Image, AlertDialog, Spacer, Flex, HStack, Center, Heading, Box, FlatList } from "native-base";
+import { Button, Image, AlertDialog, Spacer, Text, Flex, HStack, Center, Heading, Box, FlatList } from "native-base";
 import 'react-native-gesture-handler';
-import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
-/* THIS WHOLE PAGE IS A NICE TO HAVE LOL 
-but if you do want to work on it:
-
-1. attach API DELETE call to delete button
-2. create button to resume game (???? idk how to do that tho ???) */
 
 const LoadGame = ({navigation}) => {
     const [savedGames, setSavedGames] = useState([]);

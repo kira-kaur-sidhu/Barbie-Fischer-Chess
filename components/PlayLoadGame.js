@@ -1,9 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
 import { useWindowDimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard from 'react-native-chessboard';
 import { useState, useEffect } from 'react';
@@ -13,6 +10,7 @@ const API = 'https://barbie-fischer-chess.onrender.com'
 
 
 const PlayLoadGame = ({route, navigation}) => {
+    // need this info from backend
     // const whitePlayer = route.params.white;
     // const blackPlayer = route.params.white === 'engine' ? 'player' : 'engine';
     const { colors } = useTheme();
