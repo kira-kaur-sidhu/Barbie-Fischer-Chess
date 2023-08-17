@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, useWindowDimensions, Image } from 'react-native';
 import {Gesture, GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Chessboard, { ChessboardRef } from 'react-native-chessboard';
 import { Button, Modal, Center, Box, useTheme } from "native-base";
@@ -20,6 +20,7 @@ const opening_table = {
 
 const Puzzle = ({ route, navigation }) => {
     const initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    const {height, width} = useWindowDimensions();
     const [currentFen, updateFen] = useState(initialFen);
     const [puzzleFen, updatePuzzleFen] = useState(initialFen);
     const [puzzleList, updatePuzzleList] = useState([]);
@@ -29,6 +30,7 @@ const Puzzle = ({ route, navigation }) => {
     const { colors } = useTheme();
     const black = colors['pink'][200]
     const white = colors['pink'][50]
+    const [capturedP, setCapturedP]= useState([]);
 
     const ChessBoardDemo = gestureHandlerRootHOC(() => (
         <Chessboard
@@ -77,18 +79,81 @@ const Puzzle = ({ route, navigation }) => {
         updateFen(initialFen);
     }
 
+    const capturedPieces = (fen) => {
+        const fenArray = fen.split(" ")
+
+        const initialPieces = {
+            p: 8, b: 2, n: 2, r: 2, q: 1, k: 1,
+            P: 8,B: 2, N: 2, R: 2, Q: 1, K: 1
+        };
+
+        const current = {
+            p: 0, b: 0, n: 0, r: 0, q: 0, k: 0,
+            P: 0, B: 0, N: 0, R: 0, Q: 0, K: 0
+        };
+
+        const captured = {
+            p: 0, b: 0, n: 0, r: 0, q: 0, k: 0,
+            P: 0, B: 0, N: 0, R: 0, Q: 0, K: 0
+        };
+
+        for (const letter of fenArray[0]) {
+            if (letter != '/') {
+                current[letter] += 1
+            }
+        };
+
+        for (const piece in initialPieces) {
+            captured[piece] = initialPieces[piece] - current[piece];
+        };
+
+        setCapturedP(captured)
+    };
+
+    const capturedPiece = (color) => {
+        pieces = []
+        for (piece in capturedP) {
+            if (piece.toUpperCase() === piece && color === "white") {
+                for (let i = 0; i< capturedP[piece]; i++) {
+                    if (piece === "P"){pieces.push(require("../assets/pieces/P.png"))}
+                    else if (piece === "B"){pieces.push(require("../assets/pieces/B.png"))}
+                    else if (piece === "N"){pieces.push(require("../assets/pieces/N.png"))}
+                    else if (piece === "R"){pieces.push(require("../assets/pieces/R.png"))}
+                    else if (piece === "Q"){pieces.push(require("../assets/pieces/Q.png"))}
+                };
+
+            }
+            else if (piece.toLowerCase() === piece && color === "black") {
+                    for (let i = 0; i< capturedP[piece]; i++) {
+                        if (piece === "p"){pieces.push(require("../assets/pieces/pp.png"))}
+                        else if (piece === "b"){pieces.push(require("../assets/pieces/bb.png"))}
+                        else if (piece === "n"){pieces.push(require("../assets/pieces/nn.png"))}
+                        else if (piece === "r"){pieces.push(require("../assets/pieces/rr.png"))}
+                        else if (piece === "q"){pieces.push(require("../assets/pieces/qq.png"))}
+                    };
+            }
+        };
+        console.log(pieces)
+        return pieces
+    }
+
 
     return (
         <GestureHandlerRootView>
             <Center>
-                <View style={ {height: 300} }></View>
+                <View style={ {height: 340} }/>
                 <ChessBoardDemo />
                 <View style={ {height: 200} }/>
                 <Button variant="subtle" size="sm" onPress={demonstrateMoves}>Play Demo!</Button>
                 <View style={ {height: 25} } />
-                <View>
-                    <ChessBoardPuzzle />
-                </View>
+                    <Box m={2} w="100%" _text={{textTransform: 'capitalize', fontSize: 'md', fontWeight: 'bold'}}>  Engine</Box>
+                    {/* <Box style={{flexDirection: 'row'}}>{capturedPiece("white").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box> */}
+                    <Box>
+                        <ChessBoardPuzzle />
+                    </Box>
+                    {/* <Box style={{flexDirection: 'row'}}>{capturedPiece("black").map(img => <Image source={img} style={{height: 30, width: 30}}/>)}</Box> */}
+                    <Box marginY={2} marginX={-2} w="100%" _text={{textTransform: 'capitalize', textAlign: 'right', fontSize: 'md', fontWeight: 'bold'}}>Player</Box>
+
             </Center>
         </GestureHandlerRootView>
     )
