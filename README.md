@@ -5,7 +5,7 @@ by Kira, Kim, Jasmine and Sarah <br />
 
 # Download Instructions
 - In the backend-engine folder
-  - pip install requirements
+  - pip install -r requirements
   - flask run
 - In react-native-app
   - edit node modules
