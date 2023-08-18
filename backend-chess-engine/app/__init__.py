@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
-import logging 
+import logging
+from flask_cors import CORS
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -50,4 +51,5 @@ def create_app(test_config=None):
     from app.routes.game_routes import game_bp
     app.register_blueprint(game_bp)
     
+    CORS(app)
     return app
