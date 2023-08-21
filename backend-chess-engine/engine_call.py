@@ -67,7 +67,15 @@ class ChessGame:
         new_engine_list.append(result)
         return [board.fen(), new_engine_list, variation_name]
     
-    def call_engine_only(board, engine_list, engine_color): 
+    def call_engine_only(board, engine_list, engine_color):
+        """
+        The function takes a chess board, a list of chess engines, and a color as input, and returns the updated chess board FEN notation and the updated list of chess engines after making a move using our engine.
+        
+        :param board: The "board" parameter is an object that represents the current state of the chess board. It contains information about the positions of the pieces and other relevant game data
+        :param engine_list: A list that contains the moves made by the engine so far
+        :param engine_color: The `engine_color` parameter represents the color of the engine, which can be either "white" or "black"
+        :return: a tuple containing the FEN representation of the board after the move is made, and the updated engine_list.
+        """
         engine = ourEngine(board, engine_color)
         depth = 3 
         if len(engine_list) >= 12: 
