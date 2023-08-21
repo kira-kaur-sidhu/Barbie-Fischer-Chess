@@ -18,6 +18,16 @@ from our_engine import ourEngine
 
 class ChessGame:
     def opening_moves(board, current_opening, white_list, black_list, engine_color):
+        """
+        The function "opening_moves" takes in a chess board, a current opening, a list of moves made by white, a list of moves made by black, and the color of the engine. It then determines the next move to be made based on the current opening and the moves made so far, if it is no longer following an opening line it calls the engine to make a move and returns the updated board position, the updated list of moves, and the name of the variation used.
+        
+        :param board: The current state of the chess board
+        :param current_opening: The `current_opening` parameter is a dictionary that represents the current opening being played. It contains information about the opening, such as its name and variations and moves
+        :param white_list: The `white_list` parameter is a list of moves played by the white player in the game so far. It contains the moves in the order they were played
+        :param black_list: The `black_list` parameter is a list of moves made by the black player in the game so far
+        :param engine_color: The `engine_color` parameter represents the color of the engine, which can be either "white" or "black"
+        :return: a list containing the FEN representation of the board after the move, the updated engine list, and the name of the variation used for the move.
+        """
         move_index = len(black_list) + 1 
         result = None 
         variation_name = [""]
@@ -88,6 +98,12 @@ class ChessGame:
         return board.fen(), new_engine_list
     
     def check_game_status(board):
+        """
+        This function checks the status of a chess game based on the given board and returns a string indicating the end conditions of the game
+        
+        :param board: The parameter "board" represents the current state of a chess game.
+        :return: a string indicating the status of the game.
+        """
         if board.is_checkmate():
             return "Checkmate"
         if board.is_stalemate():
